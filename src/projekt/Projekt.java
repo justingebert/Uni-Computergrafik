@@ -25,9 +25,9 @@ public class Projekt extends AbstractOpenGLBase {
 
 		// Koordinaten, VAO, VBO, ... hier anlegen und im Grafikspeicher ablegen
 		float [] koord = new float[]{
-				0.0f,0.0f,0.0f,
-				1.0f,1.0f,1.0f,
-				0.0f,1.0f,0.5f
+				-0.0f,-0.5f,-0.5f,
+				0.5f,0.5f,-0.5f,
+				-0.3f,0.2f,-0.5f,
 		};
 
 		float [] col = new float[]{
@@ -60,14 +60,16 @@ public class Projekt extends AbstractOpenGLBase {
 	public void update() {
 		// Transformation durchführen (Matrix anpassen)
 		Matrix4 transform = new Matrix4();
-		transform.scale(0.5f);
+		transform.scale(0.05f);
 		transform.translate(-0.2f,0.0f, 0.0f);
-		transform.rotateZ((float)Math.toRadians(10.0f));
+		transform.rotateZ((float)Math.toRadians(120.0f));
+		transform.rotateY((float)Math.toRadians(40.0f));
 
 
-		//TODO ??
+		//TODO ?? //welches shader programm + var name
 		int loc = glGetUniformLocation(shaderProgram.getId(),"transformationsMatrix");
 
+		//transform matrix an vertex shader ubergeben
 		glUniformMatrix4fv(loc, false, transform.getValuesAsArray());
 	}
 
@@ -75,6 +77,7 @@ public class Projekt extends AbstractOpenGLBase {
 	protected void render() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		glClear(GL_COLOR_BUFFER_BIT);
 		// Matrix an Shader übertragen
 		// VAOs zeichnen
 

@@ -16,6 +16,7 @@ public class Matrix4 {
 	public Matrix4 (Matrix4 copy) {
 		// TODO neues Objekt mit den Werten von "copy" initialisieren
 		this.mat = (float[][]) copy.mat.clone();
+		//this.mat = copy.mat;
 	}
 
 	public Matrix4(float near, float far) {
@@ -31,12 +32,12 @@ public class Matrix4 {
 
 	public Matrix4 multiply(Matrix4 other) {
 		// TODO hier Matrizenmultiplikation "this = other * this" einfügen
-		float [] [] tmp = new float[3][3];
-		for(int zeile = 0; zeile<3; zeile++){
-			for(int spalte = 0; spalte < 3; spalte++){
+		float [] [] tmp = new float[4][4];
+		for(int zeile = 0; zeile<4; zeile++){
+			for(int spalte = 0; spalte < 4; spalte++){
 				float sum = 0.0F;
-				for(int i = 0;i<3;i++){
-					sum += this.mat[zeile][i] * other.mat[i][spalte];
+				for(int i = 0;i<4;i++){
+					sum += other.mat[zeile][i] * this.mat[i][spalte];
 				}
 				tmp[zeile][spalte] = sum;
 			}
@@ -49,7 +50,7 @@ public class Matrix4 {
 		// TODO Verschiebung um x,y,z zu this hinzufügen
 		Matrix4 tmp = new Matrix4();
 		float [] translate = {x,y,z,1.0F};
-		for(int zeile = 0;zeile<3;zeile++){
+		for(int zeile = 0;zeile<4;zeile++){
 			tmp.mat[zeile][3] = translate[zeile];
 		}
 		this.multiply(tmp);
@@ -59,7 +60,7 @@ public class Matrix4 {
 	public Matrix4 scale(float uniformFactor) {
 		// TODO gleichmäßige Skalierung um Faktor "uniformFactor" zu this hinzufügen
 		Matrix4 tmp = new Matrix4();
-		for(int dia = 0;dia<3;dia++){
+		for(int dia = 0;dia<4;dia++){
 			tmp.mat[dia][dia] = uniformFactor;
 		}
 		this.multiply(tmp);
@@ -70,7 +71,7 @@ public class Matrix4 {
 		// TODO ungleichförmige Skalierung zu this hinzufügen
 		Matrix4 tmp = new Matrix4();
 		float[] scale = {sx,sy,sz,1.0F};
-		for(int dia = 0;dia<3;dia++){
+		for(int dia = 0;dia<4;dia++){
 			tmp.mat[dia][dia] = scale[dia];
 		}
 		this.multiply(tmp);
@@ -120,9 +121,9 @@ public class Matrix4 {
 		// TODO hier Werte in einem Float-Array mit 16 Elementen (spaltenweise gefüllt) herausgeben
 		float[] ret = new float[16];
 		int i = 0;
-		for(int zeile = 0;zeile < 3;zeile++){
-			for(int spalte = 0;spalte < 3; spalte++){
-				ret[i] = this.mat[zeile][spalte];
+			for(int spalte = 0;spalte <= 3; spalte++){
+				for(int zeile = 0;zeile <= 3;zeile++){
+					ret[i] = this.mat[zeile][spalte];
 				i++;
 			}
 		}
