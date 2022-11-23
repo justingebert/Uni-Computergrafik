@@ -1,5 +1,22 @@
 #version 330
 
-void main(){
+layout(location=0)
+in vec3 vertecies;
+uniform mat4 transformationsMatrix;
 
+layout(location=0)
+in vec3 vertexColors;
+out vec3 color;
+
+void main(){
+    color = vertexColors;
+
+    vec4 transEcken = vec4(vertecies, 1.0);
+
+    //Transformation
+    transEcken = transEcken*transformationsMatrix;
+
+    // - var mit 2D-Koordinaten
+    // - Z-Koordinate
+    gl_Position = transEcken;
 }

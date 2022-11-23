@@ -12,6 +12,8 @@ public class Projekt extends AbstractOpenGLBase {
 
 	private ShaderProgram shaderProgram;
 
+	private int vaoId;
+
 	public static void main(String[] args) {
 		new Projekt().start("CG Projekt", 700, 700);
 	}
@@ -34,9 +36,11 @@ public class Projekt extends AbstractOpenGLBase {
 				0,0,1
 		};
 
-		int vaoId = glGenVertexArrays();
+		//build array of Arrays and get ID -> VAO
+		vaoId = glGenVertexArrays();
 		glBindVertexArray(vaoId);
 
+		//create Arrays for data -> VBO
 		sendData(3,0,koord);
 		sendData(3,1,col);
 
@@ -55,7 +59,16 @@ public class Projekt extends AbstractOpenGLBase {
 	@Override
 	public void update() {
 		// Transformation durchführen (Matrix anpassen)
+		Matrix4 transform = new Matrix4();
+		transform.scale(0.5f);
+		transform.translate(-0.2f,0.0f, 0.0f);
+		transform.rotateZ((float)Math.toRadians(10.0f));
 
+
+		//TODO ??
+		int loc = glGetUniformLocation(shaderProgram.getId(),"transformationsMatrix");
+
+		glUniformMatrix4fv(loc, false, transform.getValuesAsArray());
 	}
 
 	@Override
@@ -64,6 +77,11 @@ public class Projekt extends AbstractOpenGLBase {
 
 		// Matrix an Shader übertragen
 		// VAOs zeichnen
+
+
+		//TODO ??
+		glBindVertexArray(vaoId);
+		glDrawArrays(GL_TRIANGLES,0,3);
 	}
 
 	@Override

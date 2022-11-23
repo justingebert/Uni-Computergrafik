@@ -5,7 +5,7 @@ package projekt;
 //Matrix4 m = new Matrix4().scale(5).translate(0,1,0).rotateX(0.5f);
 public class Matrix4 {
 
-	float [][] mat = new float[3][3];
+	float [][] mat = new float[4][4];
 	public Matrix4() {
 		// TODO mit der Identitätsmatrix initialisieren
 		for(int x = 0; x < 4;x++){
@@ -35,7 +35,7 @@ public class Matrix4 {
 		for(int zeile = 0; zeile<3; zeile++){
 			for(int spalte = 0; spalte < 3; spalte++){
 				float sum = 0.0F;
-				for(int i = 0;i<4;i++){
+				for(int i = 0;i<3;i++){
 					sum += this.mat[zeile][i] * other.mat[i][spalte];
 				}
 				tmp[zeile][spalte] = sum;
@@ -118,14 +118,14 @@ public class Matrix4 {
 
 	public float[] getValuesAsArray() {
 		// TODO hier Werte in einem Float-Array mit 16 Elementen (spaltenweise gefüllt) herausgeben
-		float[] ret = new float[15];
+		float[] ret = new float[16];
 		int i = 0;
-		for(int zeile = 0;zeile<3;zeile++){
+		for(int zeile = 0;zeile < 3;zeile++){
 			for(int spalte = 0;spalte < 3; spalte++){
 				ret[i] = this.mat[zeile][spalte];
 				i++;
 			}
 		}
-		return null;
+		return ret;
 	}
 }
