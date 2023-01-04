@@ -60,7 +60,7 @@ public class Matrix4 {
 	public Matrix4 scale(float uniformFactor) {
 		// TODO gleichmäßige Skalierung um Faktor "uniformFactor" zu this hinzufügen
 		Matrix4 tmp = new Matrix4();
-		for(int dia = 0;dia<4;dia++){
+		for(int dia = 0;dia<3;dia++){
 			tmp.mat[dia][dia] = uniformFactor;
 		}
 		this.multiply(tmp);

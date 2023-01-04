@@ -64,6 +64,7 @@ public class Texture {
 		id = glGenTextures();
 		glBindTexture(GL_TEXTURE_2D, id);
 
+		//TODO textur parameter aendern
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
