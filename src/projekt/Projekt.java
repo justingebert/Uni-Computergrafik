@@ -11,7 +11,9 @@ import lenz.opengl.Texture;
 
 public class Projekt extends AbstractOpenGLBase {
 
-	private ShaderProgram shaderProgram;
+	private ShaderProgram shaderProgramMaterial;
+	private ShaderProgram shaderProgramTexture;
+
 
 	private int vaoId;
 
@@ -58,13 +60,16 @@ public class Projekt extends AbstractOpenGLBase {
 	@Override
 	protected void init() {
 		//TODO add scond one with etxtures
-		shaderProgram = new ShaderProgram("projekt");
-		glUseProgram(shaderProgram.getId());
+		shaderProgramMaterial = new ShaderProgram("projekt");
+		shaderProgramTexture = new ShaderProgram("texture");
+		glUseProgram(shaderProgramMaterial.getId());
 
 
 		Texture t = new Texture("3d-textures.jpg");
+		Texture t2 = new Texture("small.jpg");
 		//Texture t2 = new Texture();
 		glBindTexture(GL_TEXTURE_2D,t.getId()); //textur waehlen
+		glBindTexture(GL_TEXTURE_2D,t2.getId());
 
 
 
@@ -116,7 +121,7 @@ public class Projekt extends AbstractOpenGLBase {
 		sendData(2,3,uvs);
 
 
-		int loc = glGetUniformLocation(shaderProgram.getId(),"lightPosition");
+		int loc = glGetUniformLocation(shaderProgramMaterial.getId(),"lightPosition");
 		//Licht Position an vertex shader ubergeben
 		//glUniformMatrix4fv(loc, false, lightPos);
 
@@ -146,7 +151,7 @@ public class Projekt extends AbstractOpenGLBase {
 
 
 		//TODO ?? //welches shader programm + var name
-		int loc = glGetUniformLocation(shaderProgram.getId(),"transformationsMatrix");
+		int loc = glGetUniformLocation(shaderProgramMaterial.getId(),"transformationsMatrix");
 		//transform matrix an vertex shader ubergeben
 		glUniformMatrix4fv(loc, false, transform.getValuesAsArray());
 	}
