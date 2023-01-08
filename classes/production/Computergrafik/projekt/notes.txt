@@ -1,0 +1,8 @@
+model matrix -> in render uebertragen
+
+(view matrix) wenn kamera veraendert / bewegt
+
+projection matrix -> in init uebertragen
+
+gl position=
+projection*view*model*eckenAusJava
