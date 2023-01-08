@@ -14,12 +14,13 @@ public class Projekt extends AbstractOpenGLBase {
 	private ShaderProgram shaderProgramMaterial;
 	private ShaderProgram shaderProgramTexture;
 
-
 	private int vaoId;
 
 	private float angle = 0;
 
-	public float [] normals(float[] points){
+
+
+	public float [] calcNormals(float[] points){
 		float [] normals = new float[points.length];
 
 		float [] v1 = new float[3];
@@ -87,7 +88,7 @@ public class Projekt extends AbstractOpenGLBase {
 				-1.0f,+1.0f,-1.0f, +1.0f,-1.0f,-1.0f, -1.0f,-1.0f,+1.0f  // C B D
 		};
 
-		float [] normals = normals(koord);
+		float [] normals = calcNormals(koord);
 
 		float [] col = new float[]{
 				1.0f,0.0f,0.0f, 0.0f,1.0f,0.0f, 0.0f,0.0f,1.0f,
@@ -103,8 +104,6 @@ public class Projekt extends AbstractOpenGLBase {
 				0.0f,0.0f, 1.0f,0.0f, 0.0f,1.0f,
 				0.0f,0.0f, 1.0f,0.0f, 0.0f,1.0f
 		};
-
-
 
 		float [] lightPos = new float[]{
 				2.0f,1.0f,5.2f
@@ -168,6 +167,10 @@ public class Projekt extends AbstractOpenGLBase {
 		//TODO ??
 		glBindVertexArray(vaoId);
 		glDrawArrays(GL_TRIANGLES,0,12);
+
+		//new
+		RawModel model = new RawModel();
+		glDrawElements(GL_TRIANGLES,model.getVertexCount(),GL_UNSIGNED_INT,0);
 	}
 
 	@Override
