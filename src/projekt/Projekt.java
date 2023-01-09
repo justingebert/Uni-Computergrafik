@@ -156,7 +156,7 @@ public class Projekt extends AbstractOpenGLBase {
 	}
 
 	@Override
-	protected void render() {
+	protected void render(RawModel model) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -165,12 +165,15 @@ public class Projekt extends AbstractOpenGLBase {
 
 
 		//TODO ??
-		glBindVertexArray(vaoId);
-		glDrawArrays(GL_TRIANGLES,0,12);
+		/*glBindVertexArray(vaoId);
+		glDrawArrays(GL_TRIANGLES,0,12);*/
 
 		//new
-		RawModel model = new RawModel();
+		glBindVertexArray(model.getVoaID());
+		glEnableVertexAttribArray(0);
 		glDrawElements(GL_TRIANGLES,model.getVertexCount(),GL_UNSIGNED_INT,0);
+		glDisableVertexAttribArray(0);
+		glBindVertexArray(0);
 	}
 
 	@Override

@@ -61,8 +61,6 @@ public class Loader {
         glBufferData(GL_ELEMENT_ARRAY_BUFFER,indices,GL_STATIC_DRAW);
     }
 
-
-
     public void cleanUP(){
         for(int vao:vaos){
             glDeleteVertexArrays(vao);
