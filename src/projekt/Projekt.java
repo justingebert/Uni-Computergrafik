@@ -18,6 +18,9 @@ public class Projekt extends AbstractOpenGLBase {
 
 	private float angle = 0;
 
+	public Loader loader = new Loader();
+	public Model model1 = OBJLoader.loadOBJModel("body",loader);
+
 
 
 	public float [] calcNormals(float[] points){
@@ -68,6 +71,8 @@ public class Projekt extends AbstractOpenGLBase {
 
 		Texture t = new Texture("3d-textures.jpg");
 		Texture t2 = new Texture("small.jpg");
+
+
 		//Texture t2 = new Texture();
 		glBindTexture(GL_TEXTURE_2D,t.getId()); //textur waehlen
 		glBindTexture(GL_TEXTURE_2D,t2.getId());
@@ -156,7 +161,7 @@ public class Projekt extends AbstractOpenGLBase {
 	}
 
 	@Override
-	protected void render(RawModel model) {
+	protected void render() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -168,9 +173,9 @@ public class Projekt extends AbstractOpenGLBase {
 		glDrawArrays(GL_TRIANGLES,0,12);*/
 
 		//new
-		glBindVertexArray(model.getVoaID());
+		glBindVertexArray(model1.getVoaID());
 		glEnableVertexAttribArray(0);
-		glDrawElements(GL_TRIANGLES,model.getVertexCount(),GL_UNSIGNED_INT,0);
+		glDrawElements(GL_TRIANGLES,model1.getVertexCount(),GL_UNSIGNED_INT,0);
 		glDisableVertexAttribArray(0);
 		glBindVertexArray(0);
 	}

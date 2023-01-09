@@ -17,12 +17,13 @@ public class Loader {
     private List<Integer> vaos = new ArrayList<Integer>();
     private List<Integer> vbos = new ArrayList<Integer>();
 
-    public RawModel loadToVAO(float [] positions,int [] indices) {
+    public Model loadToVAO(float [] positions, float[] uvs, int [] indices) {
         int vaoID = createVAO();
         bindIndeciesBuffer(indices);
-        storeDataInAttributeList(0,positions);
+        storeDataInAttributeList(0,3,positions);
+        storeDataInAttributeList(1,2,uvs);
         unbindVAO();
-        return new RawModel(vaoID,indices.length);
+        return new Model(vaoID,indices.length);
     }
 
     private int createVAO(){
@@ -33,7 +34,7 @@ public class Loader {
     }
 
     //store data in attribute List
-    private void storeDataInAttributeList(int attributeNumber, float [] data){
+    private void storeDataInAttributeList(int attributeNumber,int dimensions, float [] data){
         int vboID = glGenBuffers();
         vbos.add(vboID);
         glBindBuffer(GL_ARRAY_BUFFER,vboID);
@@ -41,7 +42,7 @@ public class Loader {
         glBufferData(GL_ARRAY_BUFFER, data, GL_STATIC_DRAW);
 
         //put vbo into vao
-        glVertexAttribPointer(attributeNumber,3,GL_FLOAT,false,0,0);
+        glVertexAttribPointer(attributeNumber,dimensions,GL_FLOAT,false,0,0);
 
         //??
         glEnableVertexAttribArray(vboID);

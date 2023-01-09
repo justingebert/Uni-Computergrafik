@@ -2,12 +2,12 @@ package projekt;
 
 
 //3D model stored in Memorey
-public class RawModel {
+public class Model {
 
     private int voaID;
     private int vertexCount;
 
-    public RawModel(int voaID, int vertexCount) {
+    public Model(int voaID, int vertexCount) {
         this.voaID = voaID;
         this.vertexCount = vertexCount;
     }

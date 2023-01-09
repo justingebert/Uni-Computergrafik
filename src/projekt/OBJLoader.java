@@ -4,15 +4,21 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Vector;
 
 public class OBJLoader {
 
-    public static RawModel loadOBJModel (String fileName, Loader loader){
+    public static Model loadOBJModel (String fileName, Loader loader){
         FileReader fileReader = null;
+
+        File file = new File(".");
+        for(String fileNames : file.list()) System.out.println(fileNames);
         try {
-            fileReader = new FileReader(new File("res/geo/"+fileName+".obj"));
+            //File file = new File("/src/res/geo/"+fileName+".obj");
+            //FileInputStream fIs = new FileInputStream(file);
+            fileReader = new FileReader(file);
+            System.out.println("gfdgf");
         } catch (FileNotFoundException e) {
+
             System.err.println("Couldnt load file");
             throw new RuntimeException(e);
         }
