@@ -21,11 +21,11 @@ public class OBJLoader {
         List<Float> vertices = new ArrayList<Float>();
         List<Float> uvs = new ArrayList<Float>();
         List<Float> normals = new ArrayList<Float>();
-        List<Float> indices = new ArrayList<Float>();
+        List<Integer> indices = new ArrayList<Integer>();
 
         float [] verticesArray = null;
         float [] normalsArray = null;
-        float [] textureArray = null;
+        float [] uvArray = null;
         int [] indicesArray = null;
         Scanner scanner = new Scanner(fileReader);
         try{
@@ -53,7 +53,7 @@ public class OBJLoader {
                     normals.add(ny);
                     normals.add(nz);
                 }else if (line.startsWith("f ")) {
-                    textureArray = new float[vertices.size()*2];
+                    uvArray = new float[vertices.size()*2];
                     normalsArray = new float[vertices.size()*3];
                     break;
                 }
@@ -68,13 +68,47 @@ public class OBJLoader {
                 String [] vertex1 = currentLine[1].split("/");
                 String [] vertex2 = currentLine[2].split("/");
                 String [] vertex3 = currentLine[3].split("/");
+                processVertex(vertex1,indices,uvs,normals,uvArray,normalsArray);
+                processVertex(vertex2,indices,uvs,normals,uvArray,normalsArray);
+                processVertex(vertex3,indices,uvs,normals,uvArray,normalsArray);
+                line = reader.readLine();
             }
+            reader.close();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        verticesArray = new float[vertices.size()*3];
+        indicesArray = new int[indices.size()];
 
+        int vertexPointer = 0;
+        for(float vertex:vertices){
+            verticesArray[vertexPointer] = vertex;
+            vertexPointer++;
+        }
+        for(int i = 0;i<indices.size();i++){
+            indicesArray[i] = indices.get(i);
+        }
+        return loader.loadToVAO(verticesArray,uvArray,indicesArray);
     }
 
-    private static void processVertex(String)
+    private static void processVertex(String [] vertexData,List<Integer> indices,List<Float> uvs,List<Float> normals,float [] uvArray, float [] normalsArray){
+        int currentVertexPointer = Integer.parseInt(vertexData[0])-1; //-1 becasue obj starts at 1
+        indices.add(currentVertexPointer);
+        float u = uvs.get(Integer.parseInt(vertexData[1])*2-1); //what index? *2 or 3? -1 -2
+        float v = uvs.get(Integer.parseInt(vertexData[1])*2);
+        uvArray[currentVertexPointer*2] = u;
+        uvArray[currentVertexPointer*2+1] = v;
+
+
+        float nx = normals.get(Integer.parseInt(vertexData[2])*2-1);
+        float ny = normals.get(Integer.parseInt(vertexData[2])*2);
+        float nz = normals.get(Integer.parseInt(vertexData[2])*2+1);
+        normalsArray[currentVertexPointer*3] = nx;
+        normalsArray[currentVertexPointer*3+1] = ny;
+        normalsArray[currentVertexPointer*3+2] = nz;
+
+
+    }
 
 }

@@ -163,7 +163,6 @@ public class Projekt extends AbstractOpenGLBase {
 		// Matrix an Shader übertragen
 		// VAOs zeichnen
 
-
 		//TODO ??
 		/*glBindVertexArray(vaoId);
 		glDrawArrays(GL_TRIANGLES,0,12);*/
