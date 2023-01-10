@@ -16,9 +16,7 @@ public class OBJLoader {
             File file = new File("./src/res/geo/"+fileName+".obj");
             //FileInputStream fIs = new FileInputStream(file);
             fileReader = new FileReader(file);
-            System.out.println("gfdgf");
         } catch (FileNotFoundException e) {
-
             System.err.println("Couldnt load file");
             throw new RuntimeException(e);
         }
@@ -33,7 +31,6 @@ public class OBJLoader {
         float [] normalsArray = null;
         float [] uvArray = null;
         int [] indicesArray = null;
-        Scanner scanner = new Scanner(fileReader);
         try{
             while (true){
                 line = reader.readLine();
@@ -113,8 +110,6 @@ public class OBJLoader {
         normalsArray[currentVertexPointer*3] = nx;
         normalsArray[currentVertexPointer*3+1] = ny;
         normalsArray[currentVertexPointer*3+2] = nz;
-
-
     }
 
 }

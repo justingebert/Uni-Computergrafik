@@ -19,7 +19,7 @@ public class Projekt extends AbstractOpenGLBase {
 	private float angle = 0;
 
 	public Loader loader = new Loader();
-	public Model model1 = OBJLoader.loadOBJModel("body",loader);
+	public Model model1 = OBJLoader.loadOBJModel("box",loader);
 
 
 
