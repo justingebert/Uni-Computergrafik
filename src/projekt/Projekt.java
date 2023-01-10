@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
+import static org.lwjgl.opengl.GL30.glDrawElements;
 
 import lenz.opengl.AbstractOpenGLBase;
 import lenz.opengl.ShaderProgram;
@@ -19,7 +20,7 @@ public class Projekt extends AbstractOpenGLBase {
 	private float angle = 0;
 
 	public Loader loader = new Loader();
-	public Model model1 = OBJLoader.loadOBJModel("box",loader);
+
 
 
 
@@ -64,7 +65,7 @@ public class Projekt extends AbstractOpenGLBase {
 	@Override
 	protected void init() {
 		//TODO add scond one with etxtures
-		shaderProgramMaterial = new ShaderProgram("projekt");
+		shaderProgramMaterial = new ShaderProgram("texture");
 		//shaderProgramTexture = new ShaderProgram("texture");
 		glUseProgram(shaderProgramMaterial.getId());
 
@@ -76,6 +77,11 @@ public class Projekt extends AbstractOpenGLBase {
 		//Texture t2 = new Texture();
 		glBindTexture(GL_TEXTURE_2D,t.getId()); //textur waehlen
 		glBindTexture(GL_TEXTURE_2D,t2.getId());
+
+		Model model1 = OBJLoader.loadOBJModel("boxTriangulated",loader);
+		vaoId = model1.getVoaID();
+		int i = model1.getVertexCount();
+		System.out.print(i);
 
 
 
@@ -146,10 +152,10 @@ public class Projekt extends AbstractOpenGLBase {
 	@Override
 	public void update() {
 		// Transformation durchführen (Matrix anpassen)
-		angle += 0.01f;
+		//angle += 0.01f;
 		Matrix4 transform = new Matrix4();
 		transform.translate(-0.2f,0.0f, 0.0f);
-		transform.rotateY(angle);
+		transform.rotateY(50f);
 		transform.scale(0.5f);
 		//transform.rotateY((float)Math.toRadians(40.0f));
 
@@ -165,20 +171,21 @@ public class Projekt extends AbstractOpenGLBase {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glClear(GL_COLOR_BUFFER_BIT);
-		// Matrix an Shader übertragen
+
 		// VAOs zeichnen
 
-		//TODO ??
 		/*glBindVertexArray(vaoId);
 		glDrawArrays(GL_TRIANGLES,0,12);*/
 
 		//new
-		glBindVertexArray(model1.getVoaID());
+
+		glBindVertexArray(vaoId);
+
 		glEnableVertexAttribArray(0);
 
-		//glDrawArrays(GL_TRIANGLES,0,model1.getVertexCount());
+		glDrawArrays(GL_TRIANGLES,0,36);
 
-		glDrawElements(GL_TRIANGLES,model1.getVertexCount(),GL_UNSIGNED_INT,0);
+		//glDrawElements(GL_TRIANGLES,8,GL_UNSIGNED_INT,0);
 		//glDisableVertexAttribArray(0);
 		//glBindVertexArray(0);
 	}

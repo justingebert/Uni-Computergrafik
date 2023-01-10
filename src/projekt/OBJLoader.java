@@ -98,15 +98,15 @@ public class OBJLoader {
     private static void processVertex(String [] vertexData,List<Integer> indices,List<Float> uvs,List<Float> normals,float [] uvArray, float [] normalsArray){
         int currentVertexPointer = Integer.parseInt(vertexData[0])-1; //-1 becasue obj starts at 1
         indices.add(currentVertexPointer);
-        float u = uvs.get(Integer.parseInt(vertexData[1])*2-1); //what index? *2 or 3? -1 -2
-        float v = uvs.get(Integer.parseInt(vertexData[1])*2);
+        float u = uvs.get((Integer.parseInt(vertexData[1])-1)*2); //what index? *2 or 3? -1 -2
+        float v = uvs.get((Integer.parseInt(vertexData[1])-1)*2+1);
         uvArray[currentVertexPointer*2] = u;
         uvArray[currentVertexPointer*2+1] = v;
 
 
-        float nx = normals.get(Integer.parseInt(vertexData[2])*2-1);
-        float ny = normals.get(Integer.parseInt(vertexData[2])*2);
-        float nz = normals.get(Integer.parseInt(vertexData[2])*2+1);
+        float nx = normals.get((Integer.parseInt(vertexData[2])-1)*3);
+        float ny = normals.get((Integer.parseInt(vertexData[2])-1)*3+1);
+        float nz = normals.get((Integer.parseInt(vertexData[2])-1)*3)+2;
         normalsArray[currentVertexPointer*3] = nx;
         normalsArray[currentVertexPointer*3+1] = ny;
         normalsArray[currentVertexPointer*3+2] = nz;

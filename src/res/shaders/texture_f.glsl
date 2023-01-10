@@ -26,5 +26,5 @@ void main(){
     float i = 0.1 + 0.7*(max(dot(licht,normal),0)*1.0+pow(max((dot(refelktionLicht,cam)),5),0)*1.0);
 
     //coloroutf = color*i;
-    coloroutf = texel*i;
+    coloroutf = color;
 }

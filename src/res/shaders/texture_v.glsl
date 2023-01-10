@@ -21,7 +21,7 @@ out vec2 uvCordsO;
 
 void main(){
 
-    color = vertexColors;
+    color = vertecies;
     uvCordsO = uvCords;
     //normals according to tranformations
     mat3 normalMatrix = inverse(transpose(mat3(transformationsMatrix)));
