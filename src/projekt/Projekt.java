@@ -176,9 +176,9 @@ public class Projekt extends AbstractOpenGLBase {
 		glBindVertexArray(model1.getVoaID());
 		glEnableVertexAttribArray(0);
 
-		glDrawArrays(GL_TRIANGLES,0,model1.getVertexCount());
+		//glDrawArrays(GL_TRIANGLES,0,model1.getVertexCount());
 
-		//glDrawElements(GL_TRIANGLES,model1.getVertexCount(),GL_UNSIGNED_INT,0);
+		glDrawElements(GL_TRIANGLES,model1.getVertexCount(),GL_UNSIGNED_INT,0);
 		//glDisableVertexAttribArray(0);
 		//glBindVertexArray(0);
 	}

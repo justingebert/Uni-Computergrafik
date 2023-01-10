@@ -1,6 +1,7 @@
 package projekt;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL30;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -19,10 +20,10 @@ public class Loader {
 
     public Model loadToVAO(float [] positions, float[] uvs, int [] indices) {
         int vaoID = createVAO();
-        bindIndeciesBuffer(indices);
+        bindIndicesBuffer(indices);
         storeDataInAttributeList(0,3,positions);
         storeDataInAttributeList(1,2,uvs);
-        //unbindVAO();
+        unbindVAO();
         return new Model(vaoID,indices.length);
     }
 
@@ -38,8 +39,10 @@ public class Loader {
         int vboID = glGenBuffers();
         vbos.add(vboID);
         glBindBuffer(GL_ARRAY_BUFFER,vboID);
+        FloatBuffer buffer = storeDataInFloatBuffer(data);
+
         //GL_STATIC_DRAW becasue data ist static - eg alembic animation not static
-        glBufferData(GL_ARRAY_BUFFER, data, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
 
         //put vbo into vao
         glVertexAttribPointer(attributeNumber,dimensions,GL_FLOAT,false,0,0);
@@ -48,14 +51,14 @@ public class Loader {
         glEnableVertexAttribArray(vboID);
 
         //unbind currentt abo
-        //glBindBuffer(GL_ARRAY_BUFFER,0);
+        glBindBuffer(GL_ARRAY_BUFFER,0);
     }
 
     private void unbindVAO(){
         glBindVertexArray(0);
     }
 
-    private void bindIndeciesBuffer(int [] indices){
+    private void bindIndicesBuffer(int [] indices){
         int vboID = glGenBuffers();
         vbos.add(vboID);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,vboID);
@@ -70,9 +73,6 @@ public class Loader {
             glDeleteBuffers(vbo);
         }
     }
-
-
-
 
 
     //do i need this?
