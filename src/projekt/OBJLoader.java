@@ -10,10 +10,10 @@ public class OBJLoader {
     public static Model loadOBJModel (String fileName, Loader loader){
         FileReader fileReader = null;
 
-        File file = new File(".");
-        for(String fileNames : file.list()) System.out.println(fileNames);
+       /* File file = new File("./src/res/geo/");
+        for(String fileNames : file.list()) System.out.println(fileNames);*/
         try {
-            //File file = new File("/src/res/geo/"+fileName+".obj");
+            File file = new File("./src/res/geo/"+fileName+".obj");
             //FileInputStream fIs = new FileInputStream(file);
             fileReader = new FileReader(file);
             System.out.println("gfdgf");
