@@ -65,7 +65,7 @@ public class Projekt extends AbstractOpenGLBase {
 	protected void init() {
 		//TODO add scond one with etxtures
 		shaderProgramMaterial = new ShaderProgram("projekt");
-		shaderProgramTexture = new ShaderProgram("texture");
+		//shaderProgramTexture = new ShaderProgram("texture");
 		glUseProgram(shaderProgramMaterial.getId());
 
 
@@ -115,14 +115,14 @@ public class Projekt extends AbstractOpenGLBase {
 		};
 
 		//build array of Arrays and get ID -> VAO
-		vaoId = glGenVertexArrays();
+		/*vaoId = glGenVertexArrays();
 		glBindVertexArray(vaoId);
 
 		//create Arrays for data -> VBO
 		sendData(3,0,koord);
 		sendData(3,1,col);
 		sendData(3,2,normals);
-		sendData(2,3,uvs);
+		sendData(2,3,uvs);*/
 
 
 		int loc = glGetUniformLocation(shaderProgramMaterial.getId(),"lightPosition");
@@ -175,9 +175,12 @@ public class Projekt extends AbstractOpenGLBase {
 		//new
 		glBindVertexArray(model1.getVoaID());
 		glEnableVertexAttribArray(0);
-		glDrawElements(GL_TRIANGLES,model1.getVertexCount(),GL_UNSIGNED_INT,0);
-		glDisableVertexAttribArray(0);
-		glBindVertexArray(0);
+
+		glDrawArrays(GL_TRIANGLES,0,model1.getVertexCount());
+
+		//glDrawElements(GL_TRIANGLES,model1.getVertexCount(),GL_UNSIGNED_INT,0);
+		//glDisableVertexAttribArray(0);
+		//glBindVertexArray(0);
 	}
 
 	@Override

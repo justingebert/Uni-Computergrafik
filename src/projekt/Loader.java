@@ -22,7 +22,7 @@ public class Loader {
         bindIndeciesBuffer(indices);
         storeDataInAttributeList(0,3,positions);
         storeDataInAttributeList(1,2,uvs);
-        unbindVAO();
+        //unbindVAO();
         return new Model(vaoID,indices.length);
     }
 
@@ -48,7 +48,7 @@ public class Loader {
         glEnableVertexAttribArray(vboID);
 
         //unbind currentt abo
-        glBindBuffer(GL_ARRAY_BUFFER,0);
+        //glBindBuffer(GL_ARRAY_BUFFER,0);
     }
 
     private void unbindVAO(){
