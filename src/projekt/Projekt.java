@@ -12,6 +12,7 @@ import lenz.opengl.Texture;
 
 public class Projekt extends AbstractOpenGLBase {
 
+	//* ATTRIBUTES
 	private ShaderProgram shaderProgramMaterial;
 	private ShaderProgram shaderProgramTexture;
 
@@ -23,9 +24,7 @@ public class Projekt extends AbstractOpenGLBase {
 
 	public Model model1;
 
-
-
-
+	//* FUNCTIONS
 	public float [] calcNormals(float[] points){
 		float [] normals = new float[points.length];
 
@@ -60,10 +59,14 @@ public class Projekt extends AbstractOpenGLBase {
 		return normals;
 	}
 
-	public static void main(String[] args) {
-		new Projekt().start("CG Projekt", 700, 700);
+	public void sendData(int size,int index, float [] arr){
+		glBindBuffer(GL_ARRAY_BUFFER,glGenBuffers());
+		glBufferData(GL_ARRAY_BUFFER, arr, GL_STATIC_DRAW);
+		glVertexAttribPointer(index,size,GL_FLOAT,false,0,0);
+		glEnableVertexAttribArray(index);
 	}
 
+	//* PROGRAMM FUNCTIONS
 	@Override
 	protected void init() {
 		//TODO add scond one with etxtures
@@ -80,7 +83,7 @@ public class Projekt extends AbstractOpenGLBase {
 		glBindTexture(GL_TEXTURE_2D,t.getId()); //textur waehlen
 		//glBindTexture(GL_TEXTURE_2D,t2.getId());
 
-		model1 = OBJLoader.loadOBJModel("boxTriangulated",loader);
+		model1 = OBJLoader.loadOBJModel("boxTriangulatedUV",loader);
 		vaoId = model1.getVoaID();
 		int i = model1.getVertexCount();
 		System.out.print(i);
@@ -131,24 +134,18 @@ public class Projekt extends AbstractOpenGLBase {
 		sendData(3,1,col);
 		sendData(3,2,normals);
 		sendData(2,3,uvs);*/
+		Matrix4 projection = new Matrix4(1.0f,7.0f);
+		int locPM = glGetUniformLocation(shaderProgramMaterial.getId(),"projectionMatrix");
+		glUniformMatrix4fv(locPM, false, projection.getValuesAsArray());
 
-
-		int loc = glGetUniformLocation(shaderProgramMaterial.getId(),"lightPosition");
 		//Licht Position an vertex shader ubergeben
-		//glUniformMatrix4fv(loc, false, lightPos);
-
+		int loc = glGetUniformLocation(shaderProgramMaterial.getId(),"lightPosition");
 		glUniform3fv(loc, lightPos);
+
 
 
 		glEnable(GL_DEPTH_TEST); // z-Buffer aktivieren
 		glEnable(GL_CULL_FACE); // backface culling aktivieren
-	}
-
-	public void sendData(int size,int index, float [] arr){
-		glBindBuffer(GL_ARRAY_BUFFER,glGenBuffers());
-		glBufferData(GL_ARRAY_BUFFER, arr, GL_STATIC_DRAW);
-		glVertexAttribPointer(index,size,GL_FLOAT,false,0,0);
-		glEnableVertexAttribArray(index);
 	}
 
 	@Override
@@ -157,9 +154,9 @@ public class Projekt extends AbstractOpenGLBase {
 		angle += 0.01f;
 		//Matrix4 projection = new Matrix4(-5.0f,5.0f);
 		Matrix4 transform = new Matrix4();
-		transform.rotateY(angle);
-		transform.rotateZ(angle*2);
-		transform.translate(-0.5f,0.0f, 0.0f);
+		transform.rotateZ(angle);
+		//transform.rotateZ(angle*2);
+		transform.translate(-0.5f,0.0f, -5.0f);
 		transform.scale(0.5f);
 
 		//transform.rotateY((float)Math.toRadians(40.0f));
@@ -198,5 +195,10 @@ public class Projekt extends AbstractOpenGLBase {
 
 	@Override
 	public void destroy() {
+	}
+
+	//* MAIN
+	public static void main(String[] args) {
+		new Projekt().start("CG Projekt", 700, 700);
 	}
 }

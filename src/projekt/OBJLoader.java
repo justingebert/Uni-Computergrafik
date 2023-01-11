@@ -56,10 +56,8 @@ public class OBJLoader {
                     normals.add(ny);
                     normals.add(nz);
                 }else if (line.startsWith("f ")) {
-                    /*uvArray = new float[vertices.size()*2];
-                    normalsArray = new float[vertices.size()*3];*/
-                    uvArray = new float[28];
-                    normalsArray = new float[24];
+                    uvArray = new float[vertices.size()*2];
+                    normalsArray = new float[vertices.size()*3];
                     break;
                 }
 

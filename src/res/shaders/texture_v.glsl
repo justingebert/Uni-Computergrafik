@@ -8,6 +8,7 @@ layout(location=2) in vec2 uvCords;
 
 
 uniform mat4 transformationsMatrix;
+uniform mat4 projectionMatrix;
 //uniform mat4 projektionsMatrix;
 /*uniform mat4 perspektivenMatrix;*/
 //unform material variables
@@ -36,6 +37,6 @@ void main(){
     position = vec3(transEcken);
     // - var mit 2D-Koordinaten
     // - Z-Koordinate
-    gl_Position = transEcken;
+    gl_Position = projectionMatrix*transEcken;
     //licht berechnung hier ist flat
 }
