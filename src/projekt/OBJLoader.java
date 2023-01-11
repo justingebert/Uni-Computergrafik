@@ -56,8 +56,8 @@ public class OBJLoader {
                     normals.add(ny);
                     normals.add(nz);
                 }else if (line.startsWith("f ")) {
-                    uvArray = new float[vertices.size()*2];
-                    normalsArray = new float[vertices.size()*3];
+                    uvArray = new float[(int) (vertices.size()*(2.0/3.0))];
+                    normalsArray = new float[vertices.size()];
                     break;
                 }
 
@@ -81,7 +81,7 @@ public class OBJLoader {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        verticesArray = new float[vertices.size()*3];
+        verticesArray = new float[vertices.size()];
         indicesArray = new int[indices.size()];
 
         int vertexPointer = 0;
@@ -89,6 +89,7 @@ public class OBJLoader {
             verticesArray[vertexPointer] = vertex;
             vertexPointer++;
         }
+
         for(int i = 0;i<indices.size();i++){
             indicesArray[i] = indices.get(i);
         }
@@ -104,9 +105,9 @@ public class OBJLoader {
         uvArray[currentVertexPointer*2+1] = v;
 
 
-        float nx = normals.get((Integer.parseInt(vertexData[2])-1)*3);
-        float ny = normals.get((Integer.parseInt(vertexData[2])-1)*3+1);
-        float nz = normals.get((Integer.parseInt(vertexData[2])-1)*3+2);
+        float nx = normals.get(((Integer.parseInt(vertexData[2]))-1)*3);
+        float ny = normals.get(((Integer.parseInt(vertexData[2]))-1)*3+1);
+        float nz = normals.get(((Integer.parseInt(vertexData[2]))-1)*3+2);
         normalsArray[currentVertexPointer*3] = nx;
         normalsArray[currentVertexPointer*3+1] = ny;
         normalsArray[currentVertexPointer*3+2] = nz;

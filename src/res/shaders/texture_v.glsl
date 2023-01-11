@@ -9,10 +9,6 @@ layout(location=2) in vec2 uvCords;
 
 uniform mat4 transformationsMatrix;
 uniform mat4 projectionMatrix;
-//uniform mat4 projektionsMatrix;
-/*uniform mat4 perspektivenMatrix;*/
-//unform material variables
-
 
 out vec3 position;
 out vec3 color;

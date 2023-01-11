@@ -13,16 +13,18 @@ import lenz.opengl.Texture;
 public class Projekt extends AbstractOpenGLBase {
 
 	//* ATTRIBUTES
-	private ShaderProgram shaderProgramMaterial;
 	private ShaderProgram shaderProgramTexture;
+	private ShaderProgram shaderProgramProject;
 
 	private int vaoId;
+	private int vaoId2;
 
 	private float angle = 0;
 
 	public Loader loader = new Loader();
 
 	public Model model1;
+	public Model model2;
 
 	//* FUNCTIONS
 	public float [] calcNormals(float[] points){
@@ -69,26 +71,36 @@ public class Projekt extends AbstractOpenGLBase {
 	//* PROGRAMM FUNCTIONS
 	@Override
 	protected void init() {
-		//TODO add scond one with etxtures
-		shaderProgramMaterial = new ShaderProgram("texture");
-		//shaderProgramTexture = new ShaderProgram("texture");
-		glUseProgram(shaderProgramMaterial.getId());
 
+		//TODO add scond one with etxtures
+		shaderProgramTexture = new ShaderProgram("texture");
+		shaderProgramProject = new ShaderProgram("projekt");
+		//glUseProgram(shaderProgramMaterial.getId());
 
 		Texture t = new Texture("3d-textures.jpg");
 		Texture t2 = new Texture("small.jpg");
 
+		Matrix4 projection = new Matrix4(1.0f,7.0f);
 
+		float [] lightPos = new float[]{
+				2.0f,1.0f,5.2f
+		};
+
+		//glUseProgram(shaderProgramTexture.getId());
+		//glBindVertexArray(vaoId);
 		//Texture t2 = new Texture();
-		glBindTexture(GL_TEXTURE_2D,t.getId()); //textur waehlen
+		//glBindTexture(GL_TEXTURE_2D,t.getId()); //textur waehlen
 		//glBindTexture(GL_TEXTURE_2D,t2.getId());
 
-		model1 = OBJLoader.loadOBJModel("boxTriangulatedUV",loader);
-		vaoId = model1.getVoaID();
-		int i = model1.getVertexCount();
-		System.out.print(i);
+		//model1 = OBJLoader.loadOBJModel("boxTriangulatedUV",loader);
+		//vaoId = model1.getVoaID();
 
 
+		//int locPM = glGetUniformLocation(shaderProgramTexture.getId(),"projectionMatrix");
+		//glUniformMatrix4fv(locPM, false, projection.getValuesAsArray());
+
+		//int loc = glGetUniformLocation(shaderProgramTexture.getId(),"lightPosition");
+		//glUniform3fv(loc, lightPos);
 
 		// Koordinaten, VAO, VBO, ... hier anlegen und im Grafikspeicher ablegen
 		/*float [] koord = new float[]{
@@ -97,7 +109,16 @@ public class Projekt extends AbstractOpenGLBase {
 				-0.3f,0.2f,-0.5f,
 		};*/
 		//TODO projektionsmatrix init und mit tranecken verrechnen links
-		/*float [] koord = new float[]{
+
+		glUseProgram(shaderProgramProject.getId());
+		glBindTexture(GL_TEXTURE_2D,t2.getId());
+		model2 = OBJLoader.loadOBJModel("boxTriangulatedUV",loader);
+		vaoId2 = model2.getVoaID();
+		glBindVertexArray(vaoId2);
+
+
+
+		float [] koord = new float[]{
 				-1.0f,+1.0f,-1.0f, +1.0f,+1.0f,+1.0f, +1.0f,-1.0f,-1.0f, // C A B
 				+1.0f,+1.0f,+1.0f, -1.0f,-1.0f,+1.0f, +1.0f,-1.0f,-1.0f, // A D B
 				-1.0f,+1.0f,-1.0f, -1.0f,-1.0f,+1.0f, +1.0f,+1.0f,+1.0f, // C D A
@@ -119,30 +140,21 @@ public class Projekt extends AbstractOpenGLBase {
 				0.0f,0.0f, 1.0f,0.0f, 0.0f,1.0f,
 				0.0f,0.0f, 1.0f,0.0f, 0.0f,1.0f,
 				0.0f,0.0f, 1.0f,0.0f, 0.0f,1.0f
-		};*/
-
-		float [] lightPos = new float[]{
-				2.0f,1.0f,5.2f
 		};
 
 		//build array of Arrays and get ID -> VAO
-		/*vaoId = glGenVertexArrays();
-		glBindVertexArray(vaoId);
 
 		//create Arrays for data -> VBO
-		sendData(3,0,koord);
-		sendData(3,1,col);
-		sendData(3,2,normals);
-		sendData(2,3,uvs);*/
-		Matrix4 projection = new Matrix4(1.0f,7.0f);
-		int locPM = glGetUniformLocation(shaderProgramMaterial.getId(),"projectionMatrix");
-		glUniformMatrix4fv(locPM, false, projection.getValuesAsArray());
+		//sendData(3,0,koord);
+		//sendData(3,1,col);
+		//sendData(3,2,normals);
+		//sendData(2,3,uvs);
+		int locPM2 = glGetUniformLocation(shaderProgramProject.getId(),"projectionMatrix");
+		glUniformMatrix4fv(locPM2, false, projection.getValuesAsArray());
 
 		//Licht Position an vertex shader ubergeben
-		int loc = glGetUniformLocation(shaderProgramMaterial.getId(),"lightPosition");
-		glUniform3fv(loc, lightPos);
-
-
+		int loc2 = glGetUniformLocation(shaderProgramProject.getId(),"lightPosition");
+		glUniform3fv(loc2, lightPos);
 
 		glEnable(GL_DEPTH_TEST); // z-Buffer aktivieren
 		glEnable(GL_CULL_FACE); // backface culling aktivieren
@@ -155,40 +167,52 @@ public class Projekt extends AbstractOpenGLBase {
 		//Matrix4 projection = new Matrix4(-5.0f,5.0f);
 		Matrix4 transform = new Matrix4();
 		transform.rotateZ(angle);
-		//transform.rotateZ(angle*2);
+		transform.rotateX(angle*2);
 		transform.translate(-0.5f,0.0f, -5.0f);
 		transform.scale(0.5f);
 
 		//transform.rotateY((float)Math.toRadians(40.0f));
 
 		//TODO ?? //welches shader programm + var name
-		int loc = glGetUniformLocation(shaderProgramMaterial.getId(),"transformationsMatrix");
-		//int loc2 = glGetUniformLocation(shaderProgramMaterial.getId(),"projekttionsMatrix");
+		//glBindVertexArray(vaoId);
+		//glUseProgram(shaderProgramMaterial.getId());
+		//int loc = glGetUniformLocation(shaderProgramTexture.getId(),"transformationsMatrix");
+		//glUniformMatrix4fv(loc, false, transform.getValuesAsArray());
+
+		//glBindVertexArray(vaoId2);
+		//glUseProgram(shaderProgramTexture.getId());
+
+		int loc2 = glGetUniformLocation(shaderProgramProject.getId(),"transformationsMatrix");
+		glUniformMatrix4fv(loc2, false, transform.getValuesAsArray());
 		//transform matrix an vertex shader ubergeben
-		glUniformMatrix4fv(loc, false, transform.getValuesAsArray());
+
 		//glUniformMatrix4fv(loc2, false, projection.getValuesAsArray());
 	}
 
 	@Override
 	protected void render() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// VAOs zeichnen
 
 		/*glBindVertexArray(vaoId);
 		glDrawArrays(GL_TRIANGLES,0,12);*/
 		//useprogramshader
+
+		//glUseProgram(shaderProgramTexture.getId());
+		//glBindVertexArray(vaoId);
+		glBindVertexArray(vaoId2);
+		glEnableVertexAttribArray(0);
+		glDrawElements(GL_TRIANGLES,model2.getVertexCount(),GL_UNSIGNED_INT,0);
+
+		//glUseProgram(shaderProgramTexture.getId());
+		//glBindVertexArray(vaoId2);
+		//glEnableVertexAttribArray(0);
+		//glDrawArrays(GL_TRIANGLES,0,12);
+		//glDrawElements(GL_TRIANGLES,12,GL_UNSIGNED_INT,0);
 		//new
 
-		glBindVertexArray(vaoId);
 
-		glEnableVertexAttribArray(0);
-
-		//glDrawArrays(GL_TRIANGLES,0,36);
-
-		glDrawElements(GL_TRIANGLES,model1.getVertexCount(),GL_UNSIGNED_INT,0);
 		//glDisableVertexAttribArray(0);
 		//glBindVertexArray(0);
 	}

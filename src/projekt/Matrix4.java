@@ -108,7 +108,6 @@ public class Matrix4 {
 		// TODO Rotation um Z-Achse zu this hinzufügen
 		Matrix4 rotZ = new Matrix4();
 		float[] rotate = {(float) Math.cos(angle), (float) ((float)Math.sin(angle))};
-
 		rotZ.mat[0][0] = rotate[0];
 		rotZ.mat[0][1] = -1*rotate[1];
 		rotZ.mat[1][0] = rotate[1];
