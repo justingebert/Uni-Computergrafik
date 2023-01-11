@@ -2,11 +2,10 @@
 
 layout(location=0)in vec3 vertecies;
 
-layout(location=1) in vec3 vertexColors;
+layout(location=1) in vec3 vertexNormals;
 
-layout(location=2) in vec3 vertexNormals;
+layout(location=2) in vec2 uvCords;
 
-layout(location=3) in vec2 uvCords;
 
 uniform mat4 transformationsMatrix;
 //uniform mat4 projektionsMatrix;

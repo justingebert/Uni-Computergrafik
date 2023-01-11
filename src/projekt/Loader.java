@@ -22,11 +22,12 @@ public class Loader {
     private List<Integer> vaos = new ArrayList<Integer>();
     private List<Integer> vbos = new ArrayList<Integer>();
 
-    public Model loadToVAO(float [] positions, float[] uvs, int [] indices) {
+    public Model loadToVAO(float [] positions,float [] normals, float[] uvs, int [] indices) {
         int vaoID = createVAO();
         bindIndicesBuffer(indices);
         storeDataInAttributeList(0,3,positions);
-        storeDataInAttributeList(1,2,uvs);
+        storeDataInAttributeList(1,2,normals);
+        storeDataInAttributeList(2,2,uvs);
         unbindVAO();
         return new Model(vaoID,indices.length);
     }

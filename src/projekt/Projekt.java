@@ -154,11 +154,11 @@ public class Projekt extends AbstractOpenGLBase {
 	@Override
 	public void update() {
 		// Transformation durchführen (Matrix anpassen)
-		//angle += 0.01f;
+		angle += 0.01f;
 		//Matrix4 projection = new Matrix4(-5.0f,5.0f);
 		Matrix4 transform = new Matrix4();
-		transform.translate(-0.2f,0.0f, 0.0f);
-		transform.rotateY(5f);
+		transform.translate(-0.5f,0.0f, 0.0f);
+		transform.rotateY(angle);
 		//transform.rotateZ(angle);
 		transform.scale(0.5f);
 		//transform.rotateY((float)Math.toRadians(40.0f));
