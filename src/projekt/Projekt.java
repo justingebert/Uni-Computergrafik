@@ -94,7 +94,7 @@ public class Projekt extends AbstractOpenGLBase {
 				-0.3f,0.2f,-0.5f,
 		};*/
 		//TODO projektionsmatrix init und mit tranecken verrechnen links
-		float [] koord = new float[]{
+		/*float [] koord = new float[]{
 				-1.0f,+1.0f,-1.0f, +1.0f,+1.0f,+1.0f, +1.0f,-1.0f,-1.0f, // C A B
 				+1.0f,+1.0f,+1.0f, -1.0f,-1.0f,+1.0f, +1.0f,-1.0f,-1.0f, // A D B
 				-1.0f,+1.0f,-1.0f, -1.0f,-1.0f,+1.0f, +1.0f,+1.0f,+1.0f, // C D A
@@ -116,7 +116,7 @@ public class Projekt extends AbstractOpenGLBase {
 				0.0f,0.0f, 1.0f,0.0f, 0.0f,1.0f,
 				0.0f,0.0f, 1.0f,0.0f, 0.0f,1.0f,
 				0.0f,0.0f, 1.0f,0.0f, 0.0f,1.0f
-		};
+		};*/
 
 		float [] lightPos = new float[]{
 				2.0f,1.0f,5.2f
@@ -157,12 +157,12 @@ public class Projekt extends AbstractOpenGLBase {
 		angle += 0.01f;
 		//Matrix4 projection = new Matrix4(-5.0f,5.0f);
 		Matrix4 transform = new Matrix4();
-		transform.translate(-0.5f,0.0f, 0.0f);
 		transform.rotateY(angle);
-		//transform.rotateZ(angle);
+		transform.rotateZ(angle*2);
+		transform.translate(-0.5f,0.0f, 0.0f);
 		transform.scale(0.5f);
-		//transform.rotateY((float)Math.toRadians(40.0f));
 
+		//transform.rotateY((float)Math.toRadians(40.0f));
 
 		//TODO ?? //welches shader programm + var name
 		int loc = glGetUniformLocation(shaderProgramMaterial.getId(),"transformationsMatrix");
@@ -182,7 +182,7 @@ public class Projekt extends AbstractOpenGLBase {
 
 		/*glBindVertexArray(vaoId);
 		glDrawArrays(GL_TRIANGLES,0,12);*/
-
+		//useprogramshader
 		//new
 
 		glBindVertexArray(vaoId);
@@ -191,7 +191,7 @@ public class Projekt extends AbstractOpenGLBase {
 
 		//glDrawArrays(GL_TRIANGLES,0,36);
 
-		glDrawElements(GL_TRIANGLES,36,GL_UNSIGNED_INT,0);
+		glDrawElements(GL_TRIANGLES,model1.getVertexCount(),GL_UNSIGNED_INT,0);
 		//glDisableVertexAttribArray(0);
 		//glBindVertexArray(0);
 	}

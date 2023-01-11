@@ -56,8 +56,10 @@ public class OBJLoader {
                     normals.add(ny);
                     normals.add(nz);
                 }else if (line.startsWith("f ")) {
-                    uvArray = new float[vertices.size()*2];
-                    normalsArray = new float[vertices.size()*3];
+                    /*uvArray = new float[vertices.size()*2];
+                    normalsArray = new float[vertices.size()*3];*/
+                    uvArray = new float[28];
+                    normalsArray = new float[24];
                     break;
                 }
 
@@ -106,7 +108,7 @@ public class OBJLoader {
 
         float nx = normals.get((Integer.parseInt(vertexData[2])-1)*3);
         float ny = normals.get((Integer.parseInt(vertexData[2])-1)*3+1);
-        float nz = normals.get((Integer.parseInt(vertexData[2])-1)*3)+2;
+        float nz = normals.get((Integer.parseInt(vertexData[2])-1)*3+2);
         normalsArray[currentVertexPointer*3] = nx;
         normalsArray[currentVertexPointer*3+1] = ny;
         normalsArray[currentVertexPointer*3+2] = nz;

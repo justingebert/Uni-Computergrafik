@@ -26,7 +26,7 @@ public class Loader {
         int vaoID = createVAO();
         bindIndicesBuffer(indices);
         storeDataInAttributeList(0,3,positions);
-        storeDataInAttributeList(1,2,normals);
+        storeDataInAttributeList(1,3,normals);
         storeDataInAttributeList(2,2,uvs);
         unbindVAO();
         return new Model(vaoID,indices.length);
