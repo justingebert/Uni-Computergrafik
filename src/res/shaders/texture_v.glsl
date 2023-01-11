@@ -9,6 +9,7 @@ layout(location=2) in vec3 vertexNormals;
 layout(location=3) in vec2 uvCords;
 
 uniform mat4 transformationsMatrix;
+//uniform mat4 projektionsMatrix;
 /*uniform mat4 perspektivenMatrix;*/
 //unform material variables
 
@@ -32,6 +33,7 @@ void main(){
 
     //Transformation
     transEcken = transformationsMatrix*transEcken;
+    //transEcken = projektionsMatrix*transEcken;
     position = vec3(transEcken);
     // - var mit 2D-Koordinaten
     // - Z-Koordinate

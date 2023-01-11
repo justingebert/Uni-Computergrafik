@@ -21,6 +21,8 @@ public class Projekt extends AbstractOpenGLBase {
 
 	public Loader loader = new Loader();
 
+	public Model model1;
+
 
 
 
@@ -76,9 +78,9 @@ public class Projekt extends AbstractOpenGLBase {
 
 		//Texture t2 = new Texture();
 		glBindTexture(GL_TEXTURE_2D,t.getId()); //textur waehlen
-		glBindTexture(GL_TEXTURE_2D,t2.getId());
+		//glBindTexture(GL_TEXTURE_2D,t2.getId());
 
-		Model model1 = OBJLoader.loadOBJModel("boxTriangulated",loader);
+		model1 = OBJLoader.loadOBJModel("boxTriangulated",loader);
 		vaoId = model1.getVoaID();
 		int i = model1.getVertexCount();
 		System.out.print(i);
@@ -153,17 +155,21 @@ public class Projekt extends AbstractOpenGLBase {
 	public void update() {
 		// Transformation durchführen (Matrix anpassen)
 		//angle += 0.01f;
+		//Matrix4 projection = new Matrix4(-5.0f,5.0f);
 		Matrix4 transform = new Matrix4();
 		transform.translate(-0.2f,0.0f, 0.0f);
-		transform.rotateY(50f);
+		transform.rotateY(5f);
+		//transform.rotateZ(angle);
 		transform.scale(0.5f);
 		//transform.rotateY((float)Math.toRadians(40.0f));
 
 
 		//TODO ?? //welches shader programm + var name
 		int loc = glGetUniformLocation(shaderProgramMaterial.getId(),"transformationsMatrix");
+		//int loc2 = glGetUniformLocation(shaderProgramMaterial.getId(),"projekttionsMatrix");
 		//transform matrix an vertex shader ubergeben
 		glUniformMatrix4fv(loc, false, transform.getValuesAsArray());
+		//glUniformMatrix4fv(loc2, false, projection.getValuesAsArray());
 	}
 
 	@Override
@@ -183,9 +189,9 @@ public class Projekt extends AbstractOpenGLBase {
 
 		glEnableVertexAttribArray(0);
 
-		glDrawArrays(GL_TRIANGLES,0,36);
+		//glDrawArrays(GL_TRIANGLES,0,36);
 
-		//glDrawElements(GL_TRIANGLES,8,GL_UNSIGNED_INT,0);
+		glDrawElements(GL_TRIANGLES,36,GL_UNSIGNED_INT,0);
 		//glDisableVertexAttribArray(0);
 		//glBindVertexArray(0);
 	}
