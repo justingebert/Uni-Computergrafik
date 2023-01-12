@@ -67,7 +67,8 @@ public class Loader {
         int vboID = glGenBuffers();
         vbos.add(vboID);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,vboID);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER,indices,GL_STATIC_DRAW);
+        IntBuffer buffer = storeDataInIntBUffer(indices);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER,buffer,GL_STATIC_DRAW);
     }
 
     public void cleanUP(){

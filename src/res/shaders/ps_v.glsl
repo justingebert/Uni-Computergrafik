@@ -12,14 +12,12 @@ uniform mat4 transformationsMatrix;
 uniform mat4 projectionMatrix;
 
 out vec3 position;
-out vec3 color;
 out vec3 normalIN;
 out vec2 uvCordsO;
 
 
 void main(){
 
-    color = vertecies;
     uvCordsO = uvCords;
     //normals according to tranformations
     mat3 normalMatrix = inverse(transpose(mat3(transformationsMatrix)));
