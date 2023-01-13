@@ -98,19 +98,17 @@ public class Projekt extends AbstractOpenGLBase {
 		glUseProgram(shaderProgramBOX.getId());
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D,stones.getId());
-		glActiveTexture(GL_TEXTURE1);
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D,smallRed.getId());
-		int smplrT = glGetUniformLocation(shaderProgramBOX.getId(), "smplrT");
+		int smplrT = glGetUniformLocation(shaderProgramBOX.getId(), "smplr");
 		glUniform1i(smplrT,0); //?? 0->STONES 1-> small WHYYYYYYYYY
-		int smplrT2 = glGetUniformLocation(shaderProgramBOX.getId(), "smplrT2");
-		glUniform1i(smplrT2,1); //?? 0->STONES 1-> small WHYYYYYYYYY
+		int smplrT2 = glGetUniformLocation(shaderProgramBOX.getId(), "smplr2");
+		glUniform1i(smplrT2,0); //?? 0->STONES 1-> small WHYYYYYYYYY
 
 
 		//glBindVertexArray(0);
-
 		int locPM = glGetUniformLocation(shaderProgramBOX.getId(),"projectionMatrix");
 		glUniformMatrix4fv(locPM, false, projection.getValuesAsArray());
-
 		int loc = glGetUniformLocation(shaderProgramBOX.getId(),"lightPosition");
 		glUniform3fv(loc, lightPos);
 
@@ -124,14 +122,14 @@ public class Projekt extends AbstractOpenGLBase {
 
 		glBindVertexArray(vaoId2);
 		glUseProgram(shaderProgramPS.getId());
-		glActiveTexture(GL_TEXTURE0);
+		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D,stones.getId());
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D,smallRed.getId());
 		//glBindTexture(GL_TEXTURE_2D,smallRed.getId());
-		int smplrP = glGetUniformLocation(shaderProgramPS.getId(), "smplrP");
-		glUniform1i(smplrP,0);
-		int smplrP2 = glGetUniformLocation(shaderProgramPS.getId(), "smplrP2");
+		int smplrP = glGetUniformLocation(shaderProgramPS.getId(), "smplr");
+		glUniform1i(smplrP,1);
+		int smplrP2 = glGetUniformLocation(shaderProgramPS.getId(), "smplr2");
 		glUniform1i(smplrP2,1);
 
 
@@ -222,20 +220,20 @@ public class Projekt extends AbstractOpenGLBase {
 		/*glBindVertexArray(vaoId);
 		glDrawArrays(GL_TRIANGLES,0,12);*/
 		//useprogramshader
-
+		glUseProgram(shaderProgramBOX.getId());
 		glBindVertexArray(vaoId2);
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
-		glUseProgram(shaderProgramBOX.getId());
 
 		glDrawElements(GL_TRIANGLES, platonicSolid.getVertexCount(),GL_UNSIGNED_INT,0);
 
+
+		glUseProgram(shaderProgramBOX.getId());
 		glBindVertexArray(vaoId);
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
-		glUseProgram(shaderProgramBOX.getId());
 
 		glDrawElements(GL_TRIANGLES, box.getVertexCount(),GL_UNSIGNED_INT,0);
 
