@@ -74,12 +74,17 @@ public class Projekt extends AbstractOpenGLBase {
 	@Override
 	protected void init() {
 
-		//TODO add scond one with etxtures
 		shaderProgramBOX = new ShaderProgram("box");
 		shaderProgramPS = new ShaderProgram("ps");
 		//glUseProgram(shaderProgramMaterial.getId());
+		Texture stones = new Texture("3d-textures.jpg");
+		Texture smallRed = new Texture("small.jpg");
 
+		box = OBJLoader.loadOBJModel("boxTriangulatedUV",loader);
+		vaoId = box.getVoaID();
 
+		platonicSolid = OBJLoader.loadOBJModel("ps",loader);
+		vaoId2 = platonicSolid.getVoaID();
 
 		Matrix4 projection = new Matrix4(1.0f,5.0f);
 
@@ -87,14 +92,19 @@ public class Projekt extends AbstractOpenGLBase {
 				2.0f,1.0f,5.2f
 		};
 
+
+
+		glBindVertexArray(vaoId);
 		glUseProgram(shaderProgramBOX.getId());
-		int smplr2 = glGetUniformLocation(shaderProgramBOX.getId(), "smplrT");
-		Texture stones = new Texture("3d-textures.jpg");
-		glActiveTexture(GL_TEXTURE0+0);
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D,stones.getId());
-		glUniform1i(smplr2,0); //?? 0->STONES 1-> small WHYYYYYYYYY
-		box = OBJLoader.loadOBJModel("boxTriangulatedUV",loader);
-		vaoId = box.getVoaID();
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D,smallRed.getId());
+		int smplrT = glGetUniformLocation(shaderProgramBOX.getId(), "smplrT");
+		glUniform1i(smplrT,0); //?? 0->STONES 1-> small WHYYYYYYYYY
+		int smplrT2 = glGetUniformLocation(shaderProgramBOX.getId(), "smplrT2");
+		glUniform1i(smplrT2,1); //?? 0->STONES 1-> small WHYYYYYYYYY
+
 
 		//glBindVertexArray(0);
 
@@ -111,15 +121,18 @@ public class Projekt extends AbstractOpenGLBase {
 				-0.3f,0.2f,-0.5f,
 		};*/
 		//TODO projektionsmatrix init und mit tranecken verrechnen links
-		Texture smallRed = new Texture("small.jpg");
-		//glBindTexture(GL_TEXTURE_2D,stones.getId());
-		platonicSolid = OBJLoader.loadOBJModel("ps",loader);
-		vaoId2 = platonicSolid.getVoaID();
+
+		glBindVertexArray(vaoId2);
 		glUseProgram(shaderProgramPS.getId());
-		int smplr1 = glGetUniformLocation(shaderProgramPS.getId(), "smplrP");
-		glActiveTexture(GL_TEXTURE0+0);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D,stones.getId());
+		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D,smallRed.getId());
-		glUniform1i(smplr1,0);
+		//glBindTexture(GL_TEXTURE_2D,smallRed.getId());
+		int smplrP = glGetUniformLocation(shaderProgramPS.getId(), "smplrP");
+		glUniform1i(smplrP,0);
+		int smplrP2 = glGetUniformLocation(shaderProgramPS.getId(), "smplrP2");
+		glUniform1i(smplrP2,1);
 
 
 
@@ -210,15 +223,23 @@ public class Projekt extends AbstractOpenGLBase {
 		glDrawArrays(GL_TRIANGLES,0,12);*/
 		//useprogramshader
 
-		glBindVertexArray(vaoId);
-		glUseProgram(shaderProgramBOX.getId());
+		glBindVertexArray(vaoId2);
 		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
+		glUseProgram(shaderProgramBOX.getId());
+
+		glDrawElements(GL_TRIANGLES, platonicSolid.getVertexCount(),GL_UNSIGNED_INT,0);
+
+		glBindVertexArray(vaoId);
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
+		glUseProgram(shaderProgramBOX.getId());
+
 		glDrawElements(GL_TRIANGLES, box.getVertexCount(),GL_UNSIGNED_INT,0);
 
-		glBindVertexArray(vaoId2);
-		glUseProgram(shaderProgramPS.getId());
-		glEnableVertexAttribArray(0);
-		glDrawElements(GL_TRIANGLES, platonicSolid.getVertexCount(),GL_UNSIGNED_INT,0);
+
 
 
 		//glUseProgram(shaderProgramTexture.getId());
