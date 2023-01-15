@@ -82,11 +82,13 @@ public class Matrix4 {
 		// TODO Rotation um X-Achse zu this hinzufügen
 		Matrix4 rotX = new Matrix4();
 		float[] rotate = {(float) Math.cos(angle), (float) ((float)Math.sin(angle))};
-		for(int zeile = 1;zeile <3;zeile++){
+		/*for(int zeile = 1;zeile <3;zeile++){
 			rotX.mat[zeile][zeile] = rotate[0];
-		}
+		}*/
+		rotX.mat[1][1] = rotate[0];
+		rotX.mat[2][2] = rotate[0];
 		rotX.mat[1][2] = -1*rotate[1];
-		rotX.mat[1][3] = rotate[1];
+		rotX.mat[2][1] = rotate[1];
 		this.multiply(rotX);
 		return this;
 	}
@@ -95,11 +97,10 @@ public class Matrix4 {
 		// TODO Rotation um Y-Achse zu this hinzufügen
 		Matrix4 rotY = new Matrix4();
 		float[] rotate = {(float) Math.cos(angle), (float) ((float)Math.sin(angle))};
-		for(int zeile = 0;zeile <3;zeile += 2){
-			rotY.mat[zeile][zeile] = rotate[0];
-		}
+		rotY.mat[0][0] = rotate[0];
+		rotY.mat[0][2] = rotate[0];
+		rotY.mat[2][0] = rotate[1];
 		rotY.mat[0][2] = -1*rotate[1];
-		rotY.mat[2][2] = rotate[1];
 		this.multiply(rotY);
 		return this;
 	}

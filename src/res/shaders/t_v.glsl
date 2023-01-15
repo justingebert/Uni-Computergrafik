@@ -22,10 +22,12 @@ void main(){
 
     colorP = vertexColors;
     //normals according to tranformations
-    mat3 normalMatrix = inverse(transpose(mat3(transformationsMatrix)));
-    normalIN = normalMatrix*vertexNormals;
+    vec4 normals = vec4(vertexNormals,1.0);
+    mat4 normalMatrix = inverse(transpose((transformationsMatrix)));
 
-    vec4 transEcken = vec4(vertecies,1.0);
+
+    vec4 transEcken = vec4(vertecies,0);
+    normalIN = vec3(normalMatrix*transEcken);
     //Transformation
     transEcken = transformationsMatrix*transEcken;
     position = vec3(transEcken);

@@ -94,7 +94,7 @@ public class Projekt extends AbstractOpenGLBase {
         vaoId2 = platonicSolid.getVoaID();
 
 
-        Matrix4 projection = new Matrix4(0.3f, 10.0f);
+        Matrix4 projection = new Matrix4(0.3f, 50.0f);
 
         float[] lightPos = new float[]{
                 2.0f, 1.0f, 5.2f
@@ -182,9 +182,12 @@ public class Projekt extends AbstractOpenGLBase {
         angle += 0.01f;
 
         Matrix4 transformBox = new Matrix4();
-        transformBox.rotateY(angle);
-        transformBox.translate(0.0f, -1.5f, -5.0f);
-        transformBox.scale(0.3f);
+        transformBox.scale(0.8f);
+        transformBox.rotateX(angle);
+        //transformBox.rotateX(angle);
+        //rotateX not correct
+        transformBox.translate(0.0f, 0.0f, -5.0f);
+
 
         Matrix4 transform = new Matrix4(transformBox);
         //transform.rotateZ(angle);
@@ -214,7 +217,7 @@ public class Projekt extends AbstractOpenGLBase {
 
 		//glDrawArrays(GL_TRIANGLES,0,12);*/
 
-        glBindVertexArray(vaoId2);
+        /*glBindVertexArray(vaoId2);
         glUseProgram(shaderProgramPS.getId());
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
@@ -226,15 +229,15 @@ public class Projekt extends AbstractOpenGLBase {
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
         glEnableVertexAttribArray(2);
-        glDrawElements(GL_TRIANGLES, box.getVertexCount(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, box.getVertexCount(), GL_UNSIGNED_INT, 0);*/
 
-       /* glBindVertexArray(vaoId3);
+        glBindVertexArray(vaoId3);
         glUseProgram(shaderProgramBOX.getId());
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
         glEnableVertexAttribArray(2);
         glEnableVertexAttribArray(3);
-        glDrawArrays(GL_TRIANGLES,0,tetra.getVertexCount());*/
+        glDrawArrays(GL_TRIANGLES,0,tetra.getVertexCount());
         //glDrawElements(GL_TRIANGLES, tetra.getVertexCount(), GL_UNSIGNED_INT, 0);
 
     }
