@@ -32,6 +32,27 @@ public class Loader {
         return new Model(vaoID,indices.length);
     }
 
+    public Model loadToVAOnoI(float [] positions,float [] normals, float[] uvs,float[] color) {
+        int vaoID = createVAO();
+        storeDataInAttributeList(0,3,positions);
+        storeDataInAttributeList(1,3,normals);
+        storeDataInAttributeList(2,2,uvs);
+        storeDataInAttributeList(3,3,color);
+        unbindVAO();
+        return new Model(vaoID,positions.length/3);
+    }
+
+    public Model loadToVAOwCOl(float [] positions,float [] normals, float[] uvs,float[] color,int[] indices) {
+        int vaoID = createVAO();
+        bindIndicesBuffer(indices);
+        storeDataInAttributeList(0,3,positions);
+        storeDataInAttributeList(1,3,normals);
+        storeDataInAttributeList(2,2,uvs);
+        storeDataInAttributeList(3,3,color);
+        unbindVAO();
+        return new Model(vaoID,indices.length);
+    }
+
     private int createVAO(){
         int vaoID = glGenVertexArrays();
         vaos.add(vaoID);

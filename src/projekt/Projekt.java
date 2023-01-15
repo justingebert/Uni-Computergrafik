@@ -10,6 +10,8 @@ import lenz.opengl.AbstractOpenGLBase;
 import lenz.opengl.ShaderProgram;
 import lenz.opengl.Texture;
 
+import java.util.Arrays;
+
 
 public class Projekt extends AbstractOpenGLBase {
 
@@ -19,6 +21,8 @@ public class Projekt extends AbstractOpenGLBase {
 
     private int vaoId;
     private int vaoId2;
+    private int vaoId3;
+
 
     private float angle = 0;
 
@@ -27,6 +31,8 @@ public class Projekt extends AbstractOpenGLBase {
 
     public Model box;
     public Model platonicSolid;
+
+    public Model tetra;
 
     //* FUNCTIONS
     public float[] calcNormals(float[] points) {
@@ -76,6 +82,7 @@ public class Projekt extends AbstractOpenGLBase {
 
         shaderProgramBOX = new ShaderProgram("box");
         shaderProgramPS = new ShaderProgram("ps");
+        //shaderProgramPS = new ShaderProgram("t");
 
         Texture smallRed = new Texture("small.jpg");
         Texture stones = new Texture("3d-textures.jpg");
@@ -87,7 +94,7 @@ public class Projekt extends AbstractOpenGLBase {
         vaoId2 = platonicSolid.getVoaID();
 
 
-        Matrix4 projection = new Matrix4(0.3f, 5.0f);
+        Matrix4 projection = new Matrix4(0.3f, 10.0f);
 
         float[] lightPos = new float[]{
                 2.0f, 1.0f, 5.2f
@@ -116,42 +123,48 @@ public class Projekt extends AbstractOpenGLBase {
         //Licht Position an vertex shader ubergeben
         int loc2 = glGetUniformLocation(shaderProgramPS.getId(), "lightPosition");
         glUniform3fv(loc2, lightPos);
-	/*
-			float [] koord = new float[]{
-					-1.0f,+1.0f,-1.0f, +1.0f,+1.0f,+1.0f, +1.0f,-1.0f,-1.0f, // C A B
-					+1.0f,+1.0f,+1.0f, -1.0f,-1.0f,+1.0f, +1.0f,-1.0f,-1.0f, // A D B
-					-1.0f,+1.0f,-1.0f, -1.0f,-1.0f,+1.0f, +1.0f,+1.0f,+1.0f, // C D A
-					-1.0f,+1.0f,-1.0f, +1.0f,-1.0f,-1.0f, -1.0f,-1.0f,+1.0f  // C B D
-			};
 
-			//float [] normals = calcNormals(koord);
+        float[] koord = new float[]{
+                -1.0f, +1.0f, -1.0f, +1.0f, +1.0f, +1.0f, +1.0f, -1.0f, -1.0f, // C A B
+                +1.0f, +1.0f, +1.0f, -1.0f, -1.0f, +1.0f, +1.0f, -1.0f, -1.0f, // A D B
+                -1.0f, +1.0f, -1.0f, -1.0f, -1.0f, +1.0f, +1.0f, +1.0f, +1.0f, // C D A
+                -1.0f, +1.0f, -1.0f, +1.0f, -1.0f, -1.0f, -1.0f, -1.0f, +1.0f  // C B D
+        };
 
-			float [] col = new float[]{
-					1.0f,0.0f,0.0f, 0.0f,1.0f,0.0f, 0.0f,0.0f,1.0f,
-					0.0f,1.0f,0.0f, 1.0f,1.0f,0.0f, 0.0f,0.0f,1.0f,
-					1.0f,0.0f,0.0f, 1.0f,1.0f,0.0f, 0.0f,1.0f,0.0f,
-					1.0f,0.0f,0.0f, 0.0f,0.0f,1.0f, 1.0f,1.0f,0.0f
+        float[] koordI = new float[]{
+                +1.0f, +1.0f, +1.0f,    +1.0f, -1.0f, -1.0f,    -1.0f, +1.0f, -1.0f,     -1.0f, -1.0f, +1.0f
+        };
 
-			};
+        float [] normals = calcNormals(koord);
 
-			float [] uvs = new float[]{
-					0.0f,0.0f, 1.0f,0.0f, 0.0f,1.0f,
-					0.0f,0.0f, 1.0f,0.0f, 0.0f,1.0f,
-					0.0f,0.0f, 1.0f,0.0f, 0.0f,1.0f,
-					0.0f,0.0f, 1.0f,0.0f, 0.0f,1.0f
-			};
+        float[] col = new float[]{
+                1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+                0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+                1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+                1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f
 
-			int [] indices = new int[]{
-				3,1,2,
-				1,4,2,
-				3,4,1,
-				3,2,4
-			}
+        };
 
-	 */
+        float[] uvs = new float[]{
+                0.0f, 0.0f,     1.0f, 0.0f,     0.0f, 1.0f,
+                0.0f, 0.0f,     1.0f, 0.0f,     0.0f, 1.0f,
+                0.0f, 0.0f,     1.0f, 0.0f,     0.0f, 1.0f,
+                0.0f, 0.0f,     1.0f, 0.0f,     0.0f, 1.0f
+        };
+
+        int[] indices = new int[]{
+                3, 1, 2,
+                1, 4, 2,
+                3, 4, 1,
+                3, 2, 4
+        };
+
+        int[] iC = Arrays.stream(indices).map(n -> n-1).toArray();
 
         //build array of Arrays and get ID -> VAO
-
+        //tetra = loader2.loadToVAOwCOl(koordI,normals,uvs,col,iC);
+        tetra = loader2.loadToVAOnoI(koord,normals,uvs,col);
+        vaoId3 = tetra.getVoaID();
         //create Arrays for data -> VBO
         //sendData(3,0,koord);
         //sendData(3,1,col);
@@ -168,16 +181,18 @@ public class Projekt extends AbstractOpenGLBase {
         // Transformation durchführen (Matrix anpassen)
         angle += 0.01f;
 
-        Matrix4 transform = new Matrix4();
-        transform.rotateZ(angle);
-        transform.rotateY(angle);
-        transform.translate(-0.5f, 0.0f, -5.0f);
-        transform.scale(0.5f);
-
         Matrix4 transformBox = new Matrix4();
         transformBox.rotateY(angle);
-        transformBox.translate(-0.5f, 0.0f, -5.0f);
+        transformBox.translate(0.0f, -1.5f, -5.0f);
         transformBox.scale(0.3f);
+
+        Matrix4 transform = new Matrix4(transformBox);
+        //transform.rotateZ(angle);
+        transform.translate(0.0f, 0.5f, -1.0f);
+        //transform.scale(0.3f);
+
+
+
 
         glUseProgram(shaderProgramBOX.getId());
         int loc = glGetUniformLocation(shaderProgramBOX.getId(), "transformationsMatrix");
@@ -206,12 +221,22 @@ public class Projekt extends AbstractOpenGLBase {
         glEnableVertexAttribArray(2);
         glDrawElements(GL_TRIANGLES, platonicSolid.getVertexCount(), GL_UNSIGNED_INT, 0);
 
-        glBindVertexArray(vaoId);
+       glBindVertexArray(vaoId);
         glUseProgram(shaderProgramBOX.getId());
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
         glEnableVertexAttribArray(2);
         glDrawElements(GL_TRIANGLES, box.getVertexCount(), GL_UNSIGNED_INT, 0);
+
+       /* glBindVertexArray(vaoId3);
+        glUseProgram(shaderProgramBOX.getId());
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
+        glEnableVertexAttribArray(2);
+        glEnableVertexAttribArray(3);
+        glDrawArrays(GL_TRIANGLES,0,tetra.getVertexCount());*/
+        //glDrawElements(GL_TRIANGLES, tetra.getVertexCount(), GL_UNSIGNED_INT, 0);
+
     }
 
     @Override

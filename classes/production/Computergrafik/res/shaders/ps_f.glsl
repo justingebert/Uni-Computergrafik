@@ -2,7 +2,6 @@
 //lichtberechnung hier nach gourad
 
 uniform sampler2D smplr;
-uniform sampler2D smplr2;
 uniform vec3 lightPosition;
 
 
@@ -16,14 +15,14 @@ void main(){
 
     vec3 texel = texture(smplr, uvCordsO).rgb;
 
-    vec3 normal = normalize(normalIN);
+    vec3 normal = normalize(-normalIN);
     vec3 licht = normalize(lightPosition-position);
 
     vec3 refelktionLicht = reflect(-licht,normal);
 
     vec3 cam = normalize(-1*position);
 
-    float i = 0.1 + 0.7*(max(dot(licht,normal),0)*1.0+pow(max((dot(refelktionLicht,cam)),5),0)*1.0);
+    float i = 0.1 + 0.7*(max(dot(licht,normal),0)*1.0+pow(max((dot(refelktionLicht,cam)),20),0)*1.0);
 
     //coloroutf = color*i;
     coloroutf = texel*i;
