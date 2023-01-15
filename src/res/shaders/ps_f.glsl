@@ -2,7 +2,6 @@
 //lichtberechnung hier nach gourad
 
 uniform sampler2D smplr;
-uniform sampler2D smplr2;
 uniform vec3 lightPosition;
 
 
