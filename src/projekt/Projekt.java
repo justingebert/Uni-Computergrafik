@@ -16,23 +16,13 @@ import java.util.Arrays;
 public class Projekt extends AbstractOpenGLBase {
 
     //* ATTRIBUTES
-    private ShaderProgram shaderProgramBOX;
-    private ShaderProgram shaderProgramPS;
-
-    private int vaoId;
-    private int vaoId2;
-    private int vaoId3;
-
+    private ShaderProgram shaderProgram1,shaderProgram2,shaderProgram3;
+    private Loader loader = new Loader();
+    public Model sphere,donut,box,tetra;
+    private int vaoId1,vaoId2,vaoId3,vaoId4;
 
     private float angle = 0;
 
-    public Loader loader = new Loader();
-    public Loader loader2 = new Loader();
-
-    public Model box;
-    public Model platonicSolid;
-
-    public Model tetra;
 
     //* FUNCTIONS
     public float[] calcNormals(float[] points) {
@@ -76,68 +66,62 @@ public class Projekt extends AbstractOpenGLBase {
         glEnableVertexAttribArray(index);
     }
 
-    public void bindTexture(Texture texture, ShaderProgram shaderProgram,int textureSlot,String varName){
-
+    public void sendTexture(Texture texture, ShaderProgram shaderProgram, int textureSlot,int pos, String varName){
+        glUseProgram(shaderProgram.getId());
+        glActiveTexture(textureSlot);
+        glBindTexture(GL_TEXTURE_2D, texture.getId());
+        int smplr = glGetUniformLocation(shaderProgram1.getId(), varName);
+        glUniform1i(smplr, pos);
     }
-
-    public void bindMatrix(ShaderProgram shaderProgram,Matrix4 matrix,String varName){
-
+    public void sendMatrix(ShaderProgram shaderProgram, Matrix4 matrix, String varName){
+        glUseProgram(shaderProgram.getId());
+        int loc = glGetUniformLocation(shaderProgram.getId(), varName);
+        glUniformMatrix4fv(loc, false, matrix.getValuesAsArray());
+    }
+    public void sendVector(ShaderProgram shaderProgram, float[] vec, String varName){
+        glUseProgram(shaderProgram.getId());
+        int loc = glGetUniformLocation(shaderProgram.getId(), varName);
+        glUniform3fv(loc, vec);
+    }
+    public void drawObject(Model model,ShaderProgram shaderProgram, int numOfAttributes){
+        glBindVertexArray(model.getVoaID());
+        glUseProgram(shaderProgram.getId());
+        for(int i = 0;i<numOfAttributes;i++){
+            glEnableVertexAttribArray(i);
+        }
+        glDrawElements(GL_TRIANGLES, model.getVertexCount(), GL_UNSIGNED_INT, 0);
     }
 
     //* PROGRAMM FUNCTIONS
     @Override
     protected void init() {
 
-        shaderProgramBOX = new ShaderProgram("box");
-        shaderProgramPS = new ShaderProgram("ps");
-        //shaderProgramPS = new ShaderProgram("t");
+        shaderProgram1 = new ShaderProgram("box");
+        shaderProgram2 = new ShaderProgram("ps");
+        shaderProgram3 = new ShaderProgram("t");
 
         Texture smallRed = new Texture("small.jpg");
         Texture stones = new Texture("3d-textures.jpg");
 
-        box = OBJLoader.loadOBJModel("boxTriangulatedUV", loader);
-        vaoId = box.getVoaID();
-
-        platonicSolid = OBJLoader.loadOBJModel("ps", loader);
-        vaoId2 = platonicSolid.getVoaID();
-
-
         Matrix4 projection = new Matrix4(0.3f, 50.0f);
 
-        float[] lightPos = new float[]{
-                2.0f, 1.0f, 5.2f
-        };
+        sphere = OBJLoader.loadOBJModel("sphere_projectedUVS", loader);
+        vaoId1 = sphere.getVoaID();
 
+        donut = OBJLoader.loadOBJModel("donoutSmartUV", loader);
+        vaoId2 = donut.getVoaID();
 
-        //glBindVertexArray(vaoId);
-        glUseProgram(shaderProgramBOX.getId());
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, stones.getId());
-        int smplrT = glGetUniformLocation(shaderProgramBOX.getId(), "smplr");
-        glUniform1i(smplrT, 0);
-        int locPM = glGetUniformLocation(shaderProgramBOX.getId(), "projectionMatrix");
-        glUniformMatrix4fv(locPM, false, projection.getValuesAsArray());
-        int loc = glGetUniformLocation(shaderProgramBOX.getId(), "lightPosition");
-        glUniform3fv(loc, lightPos);
+        box = OBJLoader.loadOBJModel("box", loader);
+        vaoId3 = box.getVoaID();
 
-
-        glUseProgram(shaderProgramPS.getId());
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, smallRed.getId());
-        int smplrP = glGetUniformLocation(shaderProgramPS.getId(), "smplr");
-        glUniform1i(smplrP, 1);
-        int locPM2 = glGetUniformLocation(shaderProgramPS.getId(), "projectionMatrix");
-        glUniformMatrix4fv(locPM2, false, projection.getValuesAsArray());
-        //Licht Position an vertex shader ubergeben
-        int loc2 = glGetUniformLocation(shaderProgramPS.getId(), "lightPosition");
-        glUniform3fv(loc2, lightPos);
-
+        //*region Manual DATA
         float[] koord = new float[]{
-                -1.0f, +1.0f, -1.0f, +1.0f, +1.0f, +1.0f, +1.0f, -1.0f, -1.0f, // C A B
-                +1.0f, +1.0f, +1.0f, -1.0f, -1.0f, +1.0f, +1.0f, -1.0f, -1.0f, // A D B
-                -1.0f, +1.0f, -1.0f, -1.0f, -1.0f, +1.0f, +1.0f, +1.0f, +1.0f, // C D A
-                -1.0f, +1.0f, -1.0f, +1.0f, -1.0f, -1.0f, -1.0f, -1.0f, +1.0f  // C B D
+                -1.0f, +1.0f, -1.0f,    +1.0f, +1.0f, +1.0f,    +1.0f, -1.0f, -1.0f,
+                +1.0f, +1.0f, +1.0f,    -1.0f, -1.0f, +1.0f,    +1.0f, -1.0f, -1.0f,
+                -1.0f, +1.0f, -1.0f,    -1.0f, -1.0f, +1.0f,    +1.0f, +1.0f, +1.0f,
+                -1.0f, +1.0f, -1.0f,    +1.0f, -1.0f, -1.0f,    -1.0f, -1.0f, +1.0f
         };
+
 
         float[] koordI = new float[]{
                 +1.0f, +1.0f, +1.0f,    +1.0f, -1.0f, -1.0f,    -1.0f, +1.0f, -1.0f,     -1.0f, -1.0f, +1.0f
@@ -146,10 +130,10 @@ public class Projekt extends AbstractOpenGLBase {
         float [] normals = calcNormals(koord);
 
         float[] col = new float[]{
-                1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-                0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-                1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-                1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f
+                1.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 1.0f,
+                0.0f, 1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 0.0f, 1.0f,
+                1.0f, 0.0f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+                1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f, 0.0f
 
         };
 
@@ -168,14 +152,21 @@ public class Projekt extends AbstractOpenGLBase {
         };
 
         int[] iC = Arrays.stream(indices).map(n -> n-1).toArray();
+        //endregion
+        tetra = loader.loadToVAOnoI(koord,normals,uvs,col);
+        vaoId4 = tetra.getVoaID();
 
-        //build array of Arrays and get ID -> VAO
-        //tetra = loader2.loadToVAOwCOl(koordI,normals,uvs,col,iC);
-        tetra = loader2.loadToVAOnoI(koord,normals,uvs,col);
-        vaoId3 = tetra.getVoaID();
-        //create Arrays for data -> VBO
+        float[] lightPos = new float[]{
+                2.0f, 1.0f, 5.2f
+        };
 
+        sendTexture(stones, shaderProgram1,GL_TEXTURE0,0,"smplr");
+        sendMatrix(shaderProgram1,projection,"projectionMatrix");
+        sendVector(shaderProgram1,lightPos,"lightPosition");
 
+        sendTexture(smallRed,shaderProgram2,GL_TEXTURE1,1,"smplr");
+        sendMatrix(shaderProgram2,projection,"projectionMatrix");
+        sendVector(shaderProgram2,lightPos,"lightPosition");
 
         glEnable(GL_DEPTH_TEST); // z-Buffer aktivieren
         glEnable(GL_CULL_FACE); // backface culling aktivieren
@@ -183,36 +174,22 @@ public class Projekt extends AbstractOpenGLBase {
 
     @Override
     public void update() {
-        // Transformation durchführen (Matrix anpassen)
+
+        //TODO if rotX and then rotY => not correct
+
         angle += 0.01f;
 
-        Matrix4 transformBox = new Matrix4();
-        transformBox.scale(1.0f);
-        transformBox.rotateX(angle);
-        transformBox.rotateX(angle);
-        //rotateX not correct
-        transformBox.translate(0.0f, 0.0f, -5.0f);
+        Matrix4 transform1 = new Matrix4();
+        transform1.rotateY(angle);
+        transform1.translate(0.0f, 0.0f, -4.0f);
 
+        Matrix4 transform2 = new Matrix4(transform1);
+        transform2.translate(0.0f, 0.0f, 4.0f);
+        transform2.scale(1.3f);
+        transform2.translate(0.0f, 0.0f, -4.0f);
 
-        Matrix4 transform = new Matrix4(transformBox);
-        //transform.rotateZ(angle);
-        transform.translate(0.0f, 0.5f, -1.0f);
-        //transform.scale(0.3f);
-
-
-
-
-        glUseProgram(shaderProgramBOX.getId());
-        int loc = glGetUniformLocation(shaderProgramBOX.getId(), "transformationsMatrix");
-        glUniformMatrix4fv(loc, false, transformBox.getValuesAsArray());
-
-        //glBindVertexArray(vaoId2);
-        glUseProgram(shaderProgramPS.getId());
-        int loc2 = glGetUniformLocation(shaderProgramPS.getId(), "transformationsMatrix");
-        glUniformMatrix4fv(loc2, false, transform.getValuesAsArray());
-        //transform matrix an vertex shader ubergeben
-
-        //glUniformMatrix4fv(loc2, false, projection.getValuesAsArray());
+        sendMatrix(shaderProgram1,transform1,"transformationsMatrix");
+        sendMatrix(shaderProgram2,transform2,"transformationsMatrix");
     }
 
     @Override
@@ -220,31 +197,18 @@ public class Projekt extends AbstractOpenGLBase {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClear(GL_COLOR_BUFFER_BIT);
 
-		//glDrawArrays(GL_TRIANGLES,0,12);*/
+        drawObject(sphere,shaderProgram1,3);
+        drawObject(donut,shaderProgram2,3);
+        drawObject(box,shaderProgram1,3);
 
-        /*glBindVertexArray(vaoId2);
-        glUseProgram(shaderProgramPS.getId());
+        //* DRAW MANUALY CREATED OBJECT WITH ARRAYS BECASUE ITS DOESNT HAVE INDICES
+      /*  glBindVertexArray(vaoId4);
+        glUseProgram(shaderProgram1.getId());
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
-        glEnableVertexAttribArray(2);
-        glDrawElements(GL_TRIANGLES, platonicSolid.getVertexCount(), GL_UNSIGNED_INT, 0);
-
-       glBindVertexArray(vaoId);
-        glUseProgram(shaderProgramBOX.getId());
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-        glEnableVertexAttribArray(2);
-        glDrawElements(GL_TRIANGLES, box.getVertexCount(), GL_UNSIGNED_INT, 0);*/
-
-        glBindVertexArray(vaoId3);
-        glUseProgram(shaderProgramBOX.getId());
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-        glEnableVertexAttribArray(2);
-        glEnableVertexAttribArray(3);
-        glDrawArrays(GL_TRIANGLES,0,tetra.getVertexCount());
-        //glDrawElements(GL_TRIANGLES, tetra.getVertexCount(), GL_UNSIGNED_INT, 0);
-
+        glEnableVertexAttribArray(2);*/
+        //glEnableVertexAttribArray(3);
+        //glDrawArrays(GL_TRIANGLES,0,box.getVertexCount());
     }
 
     @Override
