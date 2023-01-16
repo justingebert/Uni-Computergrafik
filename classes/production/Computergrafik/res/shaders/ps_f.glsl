@@ -15,7 +15,7 @@ void main(){
 
     vec3 texel = texture(smplr, uvCordsO).rgb;
 
-    vec3 normal = normalize(-normalIN);
+    vec3 normal = normalize(normalIN);
     vec3 licht = normalize(lightPosition-position);
 
     vec3 refelktionLicht = reflect(-licht,normal);

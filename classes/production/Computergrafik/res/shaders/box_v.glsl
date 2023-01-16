@@ -21,11 +21,12 @@ void main(){
     //color = vertecies;
     uvCordsO = uvCords;
     //normals according to tranformations
-    mat3 normalMatrix = inverse(transpose(mat3(transformationsMatrix)));
-    normalIN = normalMatrix*vertexNormals;
+    vec3 normals = vertexNormals;
+    mat3 normalMatrix = mat3(transpose(inverse(transformationsMatrix)));
+    //inverse has issues --> values inconsistent
 
     vec4 transEcken = vec4(vertecies,1.0);
-
+    normalIN = normalMatrix*normals;
 
     //Transformation
     transEcken = transformationsMatrix*transEcken;
