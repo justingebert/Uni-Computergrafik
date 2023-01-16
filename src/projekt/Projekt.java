@@ -76,6 +76,14 @@ public class Projekt extends AbstractOpenGLBase {
         glEnableVertexAttribArray(index);
     }
 
+    public void bindTexture(Texture texture, ShaderProgram shaderProgram,int textureSlot,String varName){
+
+    }
+
+    public void bindMatrix(ShaderProgram shaderProgram,Matrix4 matrix,String varName){
+
+    }
+
     //* PROGRAMM FUNCTIONS
     @Override
     protected void init() {
@@ -166,10 +174,7 @@ public class Projekt extends AbstractOpenGLBase {
         tetra = loader2.loadToVAOnoI(koord,normals,uvs,col);
         vaoId3 = tetra.getVoaID();
         //create Arrays for data -> VBO
-        //sendData(3,0,koord);
-        //sendData(3,1,col);
-        //sendData(3,2,normals);
-        //sendData(2,3,uvs);
+
 
 
         glEnable(GL_DEPTH_TEST); // z-Buffer aktivieren
@@ -182,9 +187,9 @@ public class Projekt extends AbstractOpenGLBase {
         angle += 0.01f;
 
         Matrix4 transformBox = new Matrix4();
-        transformBox.scale(0.8f);
+        transformBox.scale(1.0f);
         transformBox.rotateX(angle);
-        //transformBox.rotateX(angle);
+        transformBox.rotateX(angle);
         //rotateX not correct
         transformBox.translate(0.0f, 0.0f, -5.0f);
 
