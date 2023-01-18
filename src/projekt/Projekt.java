@@ -1,14 +1,17 @@
 package projekt;
 
+import lenz.opengl.AbstractOpenGLBase;
+import lenz.opengl.ShaderProgram;
+import lenz.opengl.Texture;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 import static org.lwjgl.opengl.GL30.glDrawElements;
+import static org.lwjgl.glfw.GLFW.*;
 
-import lenz.opengl.AbstractOpenGLBase;
-import lenz.opengl.ShaderProgram;
-import lenz.opengl.Texture;
+
 
 import java.util.Arrays;
 
@@ -16,12 +19,14 @@ import java.util.Arrays;
 public class Projekt extends AbstractOpenGLBase {
 
     //* ATTRIBUTES
-    private ShaderProgram shaderProgram1,shaderProgram2,shaderProgram3;
+    private ShaderProgram shaderProgram1,shaderProgram2,shaderProgram3,shaderProgram4;
     private Loader loader = new Loader();
     public Model sphere,donut,box,tetra;
     private int vaoId1,vaoId2,vaoId3,vaoId4;
-
     private float angle = 0;
+
+    private int locked = GL_FALSE;
+    private float alpha=0.00f,beta=70.0f;
 
 
     //* FUNCTIONS
@@ -92,16 +97,54 @@ public class Projekt extends AbstractOpenGLBase {
         glDrawElements(GL_TRIANGLES, model.getVertexCount(), GL_UNSIGNED_INT, 0);
     }
 
+    public void drawArrayObject(Model model,ShaderProgram shaderProgram,int numOfAttributes){
+        glBindVertexArray(model.getVoaID());
+        glUseProgram(shaderProgram.getId());
+        for(int i = 0;i<numOfAttributes;i++){
+            glEnableVertexAttribArray(i);
+        }
+        glDrawArrays(GL_TRIANGLES,0,model.getVertexCount());
+    }
+    public void key_callback(long window, int key, int scancode, int action, int mods){
+        if (action != GLFW_PRESS) return;
+        switch (key){
+            case GLFW_KEY_ESCAPE:
+                glfwSetWindowShouldClose(window,true);
+                break;
+            case GLFW_KEY_LEFT:
+                alpha += 0.05f;
+                break;
+            case GLFW_KEY_RIGHT:
+                alpha -= 0.05f;
+                break;
+            case GLFW_KEY_UP:
+                beta -= 5.0f;
+                break;
+            case GLFW_KEY_DOWN:
+                beta += 5.0f;
+                break;
+        }
+    }
     //* PROGRAMM FUNCTIONS
     @Override
     protected void init() {
 
-        shaderProgram1 = new ShaderProgram("box");
-        shaderProgram2 = new ShaderProgram("ps");
-        shaderProgram3 = new ShaderProgram("t");
+        long window = getWindow();
+        //glfwSetMouseButtonCallback(window,k)
+        glfwSetKeyCallback(window,this::key_callback);
+
+        shaderProgram1 = new ShaderProgram("one");
+        shaderProgram2 = new ShaderProgram("two");
+        shaderProgram3 = new ShaderProgram("three");
+        shaderProgram4 = new ShaderProgram("four");
+
 
         Texture smallRed = new Texture("small.jpg");
         Texture stones = new Texture("3d-textures.jpg");
+        Texture marble = new Texture("Marble062/Marble062_Flat.jpg");
+        Texture smallChecker = new Texture("small Texture/checker.jpg");
+        Texture hexa = new Texture("hexa/ConcreteBlocksPavingHexagon006_COL_2K.png");
+
 
         Matrix4 projection = new Matrix4(0.3f, 50.0f);
 
@@ -160,13 +203,17 @@ public class Projekt extends AbstractOpenGLBase {
                 2.0f, 1.0f, 5.2f
         };
 
-        sendTexture(stones, shaderProgram1,GL_TEXTURE0,0,"smplr");
+        sendTexture(hexa, shaderProgram1,GL_TEXTURE0,0,"smplr");
         sendMatrix(shaderProgram1,projection,"projectionMatrix");
         sendVector(shaderProgram1,lightPos,"lightPosition");
 
-        sendTexture(smallRed,shaderProgram2,GL_TEXTURE1,1,"smplr");
+        sendTexture(marble,shaderProgram2,GL_TEXTURE1,1,"smplr");
         sendMatrix(shaderProgram2,projection,"projectionMatrix");
         sendVector(shaderProgram2,lightPos,"lightPosition");
+
+        sendTexture(smallChecker,shaderProgram3,GL_TEXTURE2,2,"smplr");
+        sendMatrix(shaderProgram3,projection,"projectionMatrix");
+        sendVector(shaderProgram3,lightPos,"lightPosition");
 
         glEnable(GL_DEPTH_TEST); // z-Buffer aktivieren
         glEnable(GL_CULL_FACE); // backface culling aktivieren
@@ -183,13 +230,20 @@ public class Projekt extends AbstractOpenGLBase {
         transform1.rotateY(angle);
         transform1.translate(0.0f, 0.0f, -4.0f);
 
-        Matrix4 transform2 = new Matrix4(transform1);
-        transform2.translate(0.0f, 0.0f, 4.0f);
-        transform2.scale(1.3f);
+        Matrix4 transform2 = new Matrix4();
+        transform2.rotateY(alpha);
+        transform2.scale(1.5f);
         transform2.translate(0.0f, 0.0f, -4.0f);
+
+        Matrix4 transform3 = new Matrix4(transform1);
+        //transform3.scale(0.5F);
+        transform3.rotateY(angle);
+        transform3.translate(-0.0f, 1.0f, -1.0f);
+        //transform3.rotateY(angle*2);
 
         sendMatrix(shaderProgram1,transform1,"transformationsMatrix");
         sendMatrix(shaderProgram2,transform2,"transformationsMatrix");
+        sendMatrix(shaderProgram3,transform3,"transformationsMatrix");
     }
 
     @Override
@@ -199,16 +253,10 @@ public class Projekt extends AbstractOpenGLBase {
 
         drawObject(sphere,shaderProgram1,3);
         drawObject(donut,shaderProgram2,3);
-        drawObject(box,shaderProgram1,3);
+        //drawObject(box,shaderProgram1,3);
 
         //* DRAW MANUALY CREATED OBJECT WITH ARRAYS BECASUE ITS DOESNT HAVE INDICES
-      /*  glBindVertexArray(vaoId4);
-        glUseProgram(shaderProgram1.getId());
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-        glEnableVertexAttribArray(2);*/
-        //glEnableVertexAttribArray(3);
-        //glDrawArrays(GL_TRIANGLES,0,box.getVertexCount());
+        drawArrayObject(tetra,shaderProgram3,4);
     }
 
     @Override

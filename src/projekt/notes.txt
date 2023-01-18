@@ -6,3 +6,15 @@ projection matrix -> in init uebertragen
 
 gl position=
 projection*view*model*eckenAusJava
+
+
+
+FRAGEN:
+wirklich neues shaderprogramm fuer verschiedenen Transformationen?
+libraries fuer pbr?
+uv seams duplizieren? anderer weg?
+useprogram vor uebertragen von daten noetig?
+texturen korrekt uebertragen? mit Texturespaces plus offset
+
+inverse normals buggy?
+
