@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="cg_gebert">
+    <output-path>$PROJECT_DIR$/classes/artifacts/cg_gebert</output-path>
+    <root id="archive" name="cg_gebert.jar">
+      <element id="module-output" name="Computergrafik" />
+      <element id="module-source" name="Computergrafik" />
+    </root>
+  </artifact>
+</component>

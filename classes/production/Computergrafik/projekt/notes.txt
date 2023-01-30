@@ -15,4 +15,13 @@ libraries fuer pbr?
 uv seams duplizieren? anderer weg?
 useprogram vor uebertragen von daten noetig?
 texturen korrekt uebertragen? mit Texturespaces plus offset
+wie binde ich ein hdri ein?
+inverse normals buggy?
 
+
+
+Modul fragen:
+plan moeglich?
+was fuer awe
+was ist parixphase?
+medienrecht pflicht?

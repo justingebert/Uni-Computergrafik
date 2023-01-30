@@ -15,16 +15,20 @@ public class Texture {
 	private int id;
 
 	public Texture(String resourceName) {
-		this(resourceName, 1, false);
+		this(resourceName, 1, false,GL_LINEAR,GL_LINEAR_MIPMAP_LINEAR);
 	}
 
 	public Texture(String resourceName, int numberOfMipMapLevels) {
-		this(resourceName, numberOfMipMapLevels, numberOfMipMapLevels != 1);
+		this(resourceName, numberOfMipMapLevels, numberOfMipMapLevels != 1,GL_LINEAR,GL_LINEAR_MIPMAP_LINEAR);
 	}
 
-	public Texture(String resourceName, int numberOfMipMapLevels, boolean autoGenerateMipMaps) {
+	public Texture(String resourceName, int numberOfMipMapLevels, int filter,int filterMip) {
+		this(resourceName, numberOfMipMapLevels, numberOfMipMapLevels != 1,filter,filterMip);
+	}
+
+	public Texture(String resourceName, int numberOfMipMapLevels, boolean autoGenerateMipMaps,int filter, int filterMip) {
 		try {
-			createTextureFromImage(ImageIO.read(createInputStreamFromResourceName(resourceName)));
+			createTextureFromImage(ImageIO.read(createInputStreamFromResourceName(resourceName)),filter,filterMip);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, numberOfMipMapLevels - 1);
 			if (autoGenerateMipMaps) {
 				glGenerateMipmap(GL_TEXTURE_2D);
@@ -42,7 +46,7 @@ public class Texture {
 		return getClass().getResourceAsStream(resourceName);
 	}
 
-	private void createTextureFromImage(BufferedImage image) {
+	private void createTextureFromImage(BufferedImage image,int filter,int filterMip) {
 		int width = image.getWidth();
 		int height = image.getHeight();
 		boolean hasAlpha = image.getColorModel().hasAlpha();
@@ -64,10 +68,9 @@ public class Texture {
 
 		id = glGenTextures();
 		glBindTexture(GL_TEXTURE_2D, id);
-
 		//TODO textur parameter aendern
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filterMip);
 
 		glTexImage2D(GL_TEXTURE_2D, 0, hasAlpha ? GL_RGBA : GL_RGB, width, height, 0, hasAlpha ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, buffer);
 	}

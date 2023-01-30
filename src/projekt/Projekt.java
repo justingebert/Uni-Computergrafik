@@ -75,7 +75,7 @@ public class Projekt extends AbstractOpenGLBase {
         glUseProgram(shaderProgram.getId());
         glActiveTexture(textureSlot);
         glBindTexture(GL_TEXTURE_2D, texture.getId());
-        int smplr = glGetUniformLocation(shaderProgram1.getId(), varName);
+        int smplr = glGetUniformLocation(shaderProgram.getId(), varName);
         glUniform1i(smplr, pos);
     }
     public void sendMatrix(ShaderProgram shaderProgram, Matrix4 matrix, String varName){
@@ -231,7 +231,7 @@ public class Projekt extends AbstractOpenGLBase {
         transform1.translate(0.0f, 0.0f, -4.0f);
 
         Matrix4 transform2 = new Matrix4();
-        transform2.rotateY(alpha);
+        transform2.rotateY(alpha*5);
         transform2.scale(1.5f);
         transform2.translate(0.0f, 0.0f, -4.0f);
 
