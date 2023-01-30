@@ -24,7 +24,7 @@ public class Projekt extends AbstractOpenGLBase {
     public Model sphere,donut,box,tetra;
     private int vaoId1,vaoId2,vaoId3,vaoId4;
     private float angle = 0;
-
+    private float move = 0;
     private int locked = GL_FALSE;
     private float alpha=0.00f,beta=70.0f;
 
@@ -96,7 +96,6 @@ public class Projekt extends AbstractOpenGLBase {
         }
         glDrawElements(GL_TRIANGLES, model.getVertexCount(), GL_UNSIGNED_INT, 0);
     }
-
     public void drawArrayObject(Model model,ShaderProgram shaderProgram,int numOfAttributes){
         glBindVertexArray(model.getVoaID());
         glUseProgram(shaderProgram.getId());
@@ -139,11 +138,13 @@ public class Projekt extends AbstractOpenGLBase {
         shaderProgram4 = new ShaderProgram("four");
 
 
-        Texture smallRed = new Texture("small.jpg");
-        Texture stones = new Texture("3d-textures.jpg");
-        Texture marble = new Texture("Marble062/Marble062_Flat.jpg");
-        Texture smallChecker = new Texture("small Texture/checker.jpg");
-        Texture hexa = new Texture("hexa/ConcreteBlocksPavingHexagon006_COL_2K.png");
+        //Texture texLowRes = new Texture("small.jpg");
+        Texture stones = new Texture("3d-textures.jpg",2,GL_LINEAR,GL_LINEAR_MIPMAP_LINEAR);
+        //Texture marble = new Texture("Marble062/Marble062_Flat.jpg");
+
+        Texture texLowRes = new Texture("checker.jpg",0,GL_NEAREST,GL_NEAREST_MIPMAP_NEAREST);
+        Texture texLowResLinear = new Texture("checker.jpg",2,GL_LINEAR,GL_LINEAR_MIPMAP_LINEAR);
+        Texture hexa = new Texture("ConcreteBlocksPavingHexagon006_COL_4K.png");
 
 
         Matrix4 projection = new Matrix4(0.3f, 50.0f);
@@ -207,13 +208,19 @@ public class Projekt extends AbstractOpenGLBase {
         sendMatrix(shaderProgram1,projection,"projectionMatrix");
         sendVector(shaderProgram1,lightPos,"lightPosition");
 
-        sendTexture(marble,shaderProgram2,GL_TEXTURE1,1,"smplr");
+        sendTexture(texLowRes,shaderProgram2,GL_TEXTURE1,1,"smplr");
         sendMatrix(shaderProgram2,projection,"projectionMatrix");
         sendVector(shaderProgram2,lightPos,"lightPosition");
 
-        sendTexture(smallChecker,shaderProgram3,GL_TEXTURE2,2,"smplr");
+        sendTexture(texLowResLinear,shaderProgram3,GL_TEXTURE2,2,"smplr");
         sendMatrix(shaderProgram3,projection,"projectionMatrix");
         sendVector(shaderProgram3,lightPos,"lightPosition");
+
+        sendTexture(stones,shaderProgram4,GL_TEXTURE3,3,"smplr");
+        sendMatrix(shaderProgram4,projection,"projectionMatrix");
+        sendVector(shaderProgram4,lightPos,"lightPosition");
+
+
 
         glEnable(GL_DEPTH_TEST); // z-Buffer aktivieren
         glEnable(GL_CULL_FACE); // backface culling aktivieren
@@ -225,25 +232,37 @@ public class Projekt extends AbstractOpenGLBase {
         //TODO if rotX and then rotY => not correct
 
         angle += 0.01f;
+        move += 0.03f;
 
         Matrix4 transform1 = new Matrix4();
         transform1.rotateY(angle);
-        transform1.translate(0.0f, 0.0f, -4.0f);
+        transform1.translate(0.0f, 0.0f, -3.5f);
 
         Matrix4 transform2 = new Matrix4();
         transform2.rotateY(alpha*5);
         transform2.scale(1.5f);
-        transform2.translate(0.0f, 0.0f, -4.0f);
+        transform2.translate(0.0f, -1.5f, -4.0f);
 
         Matrix4 transform3 = new Matrix4(transform1);
-        //transform3.scale(0.5F);
-        transform3.rotateY(angle);
-        transform3.translate(-0.0f, 1.0f, -1.0f);
+        transform1.translate(0.0f, 0.0f, 3.5f);
+        transform3.rotateY(-angle);
+        transform1.translate(0.0f, 0.0f, -3.5f);
+
+        transform3.scale(0.7F);
+        transform3.translate(-0.0f, 0.5f, -4.0f);
         //transform3.rotateY(angle*2);
+
+        Matrix4 transform4 = new Matrix4();
+        transform4.scale(0.5f);
+        transform4.rotateZ(angle);
+        transform4.translate(0.0f,2.5f,-4.0f);
+        transform4.translate(0.0f,0.0f,(float)Math.cos(move));
+
 
         sendMatrix(shaderProgram1,transform1,"transformationsMatrix");
         sendMatrix(shaderProgram2,transform2,"transformationsMatrix");
         sendMatrix(shaderProgram3,transform3,"transformationsMatrix");
+        sendMatrix(shaderProgram4,transform4,"transformationsMatrix");
     }
 
     @Override
@@ -253,7 +272,7 @@ public class Projekt extends AbstractOpenGLBase {
 
         drawObject(sphere,shaderProgram1,3);
         drawObject(donut,shaderProgram2,3);
-        //drawObject(box,shaderProgram1,3);
+        drawObject(box,shaderProgram4,3);
 
         //* DRAW MANUALY CREATED OBJECT WITH ARRAYS BECASUE ITS DOESNT HAVE INDICES
         drawArrayObject(tetra,shaderProgram3,4);
