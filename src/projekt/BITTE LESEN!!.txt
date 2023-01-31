@@ -1,4 +1,4 @@
-obj loading partly from: https://www.youtube.com/watch?v=YKFYtekgnP8&list=PLRIWtICgwaX0u7Rf9zkZhLoLuZVfUksDP&index=10&ab_channel=ThinMatrix
+obj loading from: https://www.youtube.com/watch?v=YKFYtekgnP8&list=PLRIWtICgwaX0u7Rf9zkZhLoLuZVfUksDP&index=10&ab_channel=ThinMatrix
 
 1.
 selbsterstelltes Objekt: Tetraeder Projekt:161-200

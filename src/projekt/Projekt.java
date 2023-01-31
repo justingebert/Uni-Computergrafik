@@ -143,7 +143,7 @@ public class Projekt extends AbstractOpenGLBase {
         Texture texLowRes = new Texture("checkerBW.jpg",0,GL_NEAREST,GL_NEAREST_MIPMAP_NEAREST);
         Texture texLowResLinear = new Texture("checkerBW.jpg",2,GL_LINEAR,GL_LINEAR_MIPMAP_LINEAR);
         Texture hexa = new Texture("ConcreteBlocksPavingHexagon006_COL_4K.png");
-        Texture hexaN = new Texture("ConcreteBlocksPavingHexagon006_NRM_4K.png");
+        Texture hexaN = new Texture("ConcreteBlocksPavingHexagon006_NRM_1K.png");
 
 
         Matrix4 projection = new Matrix4(0.3f, 50.0f);
