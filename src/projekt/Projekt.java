@@ -244,9 +244,10 @@ public class Projekt extends AbstractOpenGLBase {
         transform2.translate(0.0f, -1.5f, -4.0f);
 
         Matrix4 transform3 = new Matrix4(transform1);
-        transform1.translate(0.0f, 0.0f, 3.5f);
+        transform3.translate(0.0f, 0.0f, 3.5f);
         transform3.rotateY(-angle);
-        transform1.translate(0.0f, 0.0f, -3.5f);
+        transform3.translate(0.0f, 0.0f, -3.5f);
+        transform3.rotateY(angle);
 
         transform3.scale(0.7F);
         transform3.translate(-0.0f, 0.5f, -4.0f);
@@ -255,8 +256,8 @@ public class Projekt extends AbstractOpenGLBase {
         Matrix4 transform4 = new Matrix4();
         transform4.scale(0.5f);
         transform4.rotateZ(angle);
-        transform4.translate(0.0f,2.5f,-4.0f);
-        transform4.translate(0.0f,0.0f,(float)Math.cos(move));
+        transform4.translate(0.0f,2.5f,-5.0f);
+        transform4.translate(0.0f,0.0f,(float)Math.cos(move)*2);
 
 
         sendMatrix(shaderProgram1,transform1,"transformationsMatrix");
