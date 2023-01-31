@@ -8,20 +8,14 @@ gl position=
 projection*view*model*eckenAusJava
 
 
+Sphere: oversampling
 
-FRAGEN:
-wirklich neues shaderprogramm fuer verschiedenen Transformationen?
-libraries fuer pbr?
-uv seams duplizieren? anderer weg?
-useprogram vor uebertragen von daten noetig?
-texturen korrekt uebertragen? mit Texturespaces plus offset
-wie binde ich ein hdri ein?
-inverse normals buggy?
+Donut: undersampling
+
+Box: Mipmapping
+
+2x tetra: filtering
 
 
 
-Modul fragen:
-plan moeglich?
-was fuer awe
-was ist parixphase?
-medienrecht pflicht?
+
