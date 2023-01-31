@@ -138,24 +138,23 @@ public class Projekt extends AbstractOpenGLBase {
         shaderProgram4 = new ShaderProgram("four");
 
 
-        //Texture texLowRes = new Texture("small.jpg");
-        Texture stones = new Texture("3d-textures.jpg",2,GL_LINEAR,GL_LINEAR_MIPMAP_LINEAR);
-        //Texture marble = new Texture("Marble062/Marble062_Flat.jpg");
 
-        Texture texLowRes = new Texture("checker.jpg",0,GL_NEAREST,GL_NEAREST_MIPMAP_NEAREST);
-        Texture texLowResLinear = new Texture("checker.jpg",2,GL_LINEAR,GL_LINEAR_MIPMAP_LINEAR);
+        Texture stones = new Texture("3d-textures.jpg",2,GL_LINEAR,GL_LINEAR_MIPMAP_LINEAR);
+        Texture texLowRes = new Texture("checkerBW.jpg",0,GL_NEAREST,GL_NEAREST_MIPMAP_NEAREST);
+        Texture texLowResLinear = new Texture("checkerBW.jpg",2,GL_LINEAR,GL_LINEAR_MIPMAP_LINEAR);
         Texture hexa = new Texture("ConcreteBlocksPavingHexagon006_COL_4K.png");
+        Texture hexaN = new Texture("ConcreteBlocksPavingHexagon006_NRM_4K.png");
 
 
         Matrix4 projection = new Matrix4(0.3f, 50.0f);
 
-        sphere = OBJLoader.loadOBJModel("sphere_projectedUVS", loader);
+        sphere = OBJLoader.loadOBJModel("sphere_dvatuv", loader);
         vaoId1 = sphere.getVoaID();
 
-        donut = OBJLoader.loadOBJModel("donoutSmartUV", loader);
+        donut = OBJLoader.loadOBJModel("donutUV", loader);
         vaoId2 = donut.getVoaID();
 
-        box = OBJLoader.loadOBJModel("box", loader);
+        box = OBJLoader.loadOBJModel("box_double_v_at_seam", loader);
         vaoId3 = box.getVoaID();
 
         //*region Manual DATA
@@ -205,18 +204,19 @@ public class Projekt extends AbstractOpenGLBase {
         };
 
         sendTexture(hexa, shaderProgram1,GL_TEXTURE0,0,"smplr");
+        sendTexture(hexaN, shaderProgram1,GL_TEXTURE1,1,"smplrN");
         sendMatrix(shaderProgram1,projection,"projectionMatrix");
         sendVector(shaderProgram1,lightPos,"lightPosition");
 
-        sendTexture(texLowRes,shaderProgram2,GL_TEXTURE1,1,"smplr");
+        sendTexture(texLowRes,shaderProgram2,GL_TEXTURE2,2,"smplr");
         sendMatrix(shaderProgram2,projection,"projectionMatrix");
         sendVector(shaderProgram2,lightPos,"lightPosition");
 
-        sendTexture(texLowResLinear,shaderProgram3,GL_TEXTURE2,2,"smplr");
+        sendTexture(texLowResLinear,shaderProgram3,GL_TEXTURE3,3,"smplr");
         sendMatrix(shaderProgram3,projection,"projectionMatrix");
         sendVector(shaderProgram3,lightPos,"lightPosition");
 
-        sendTexture(stones,shaderProgram4,GL_TEXTURE3,3,"smplr");
+        sendTexture(stones,shaderProgram4,GL_TEXTURE4,4,"smplr");
         sendMatrix(shaderProgram4,projection,"projectionMatrix");
         sendVector(shaderProgram4,lightPos,"lightPosition");
 

@@ -1,0 +1,26 @@
+obj loading partly from: https://www.youtube.com/watch?v=YKFYtekgnP8&list=PLRIWtICgwaX0u7Rf9zkZhLoLuZVfUksDP&index=10&ab_channel=ThinMatrix
+
+1.
+selbsterstelltes Objekt: Tetraeder Projekt:161-200
+geladenene OBjekte: alles andere Projekt:152-201
+
+2.
+Fortlaufende Transformationen: Projekt:230-266
+hierachische Transformation: tetraeder dreht sich um sphere: 246-249
+
+3.
+Sphere: oversampling
+Donut: undersampling
+Box: Mipmapping
+tetra, donut: filtering
+
+4.
+vie verschiedene Shaderprogramme mit Texturen und Phong
+
+5. Interaktion:
+pfeil nach links Taste dreht Donut
+
+
+
+
+
